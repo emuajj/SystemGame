@@ -1,0 +1,50 @@
+package com.joanjaume.myapplication.android.components.card
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
+import androidx.compose.ui.Modifier
+
+@Composable
+fun CardComposable(card: CardGeneric) {
+    Card(
+        modifier = Modifier
+            .padding(16.dp),
+        shape = RoundedCornerShape(8.dp),
+        backgroundColor = Color.White
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = card.title,
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.primary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Name: ${card.name}",
+                style = MaterialTheme.typography.body1
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Type: ${card.type}",
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.secondary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = card.description,
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onSurface
+            )
+        }
+    }
+}
