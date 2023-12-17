@@ -19,15 +19,27 @@ class MainActivity : ComponentActivity() {
     private val deckViewModel = DeckViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val cardDeck: MutableList<CardGeneric> = deckViewModel.getDeck().toMutableList();
+//        val cardDeck: MutableList<CardGeneric> = viewModel.getDeck().toMutableList();
         setContent {
             MyApplicationTheme {
+//                val flowDeck by viewModels()
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
                     Column() {
+//                        Button(onClick = {viewModel.addCard()}) {
 
+                    }
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxSize()
+//                                .align()
+                    ) {
+                        items(viewModel.getDeck()) { card ->
+                            CardComposable(card)
+                            Spacer(modifier = Modifier.height(16.dp))
                         LazyRow(
                             modifier = Modifier
                                 .fillMaxSize()

@@ -1,7 +1,6 @@
 package com.joanjaume.myapplication.android.`view-models`
 
 import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 
 class DeckViewModel {
 
