@@ -1,8 +1,10 @@
 package com.joanjaume.myapplication.models.cards.`card-generic`
 
+import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
+
 open class CardGeneric(
     val title: String,
-    val type: String,
+    val type: CardType,
     val description: String,
     val name: String
 ) {

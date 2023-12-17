@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
                         LazyRow(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .align()
                         ) {
                             items(cardDeck) { card ->
                                 CardComposable(card)

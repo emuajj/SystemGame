@@ -1,7 +1,6 @@
 package com.joanjaume.myapplication.models.interfaces.cardInterface
 
 enum class CardType {
-    CPU,
     TASK
 }
 
