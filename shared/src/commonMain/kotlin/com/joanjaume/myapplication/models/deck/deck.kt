@@ -1,6 +1,7 @@
 package com.joanjaume.myapplication.models.deck
 
 import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
+import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 
 class Deck(initializeDeck: Array<CardGeneric>) {
     private var deckCards = arrayOf<CardGeneric>()
@@ -22,11 +23,10 @@ class Deck(initializeDeck: Array<CardGeneric>) {
         print(deckCards)
     }
 
-    fun addCard()
-    {
+    fun addCard() {
         deckCards += CardGeneric(
             "Card 1",
-            "Type A",
+            CardType.TASK,
             "Description for Card 1",
             "John Doe"
         )

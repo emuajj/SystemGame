@@ -1,7 +1,8 @@
 package com.joanjaume.myapplication.models.interfaces.cardInterface
 
 enum class CardType {
-    TASK
+    TASK,
+    CPU
 }
 
 interface ICardGeneric {

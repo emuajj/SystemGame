@@ -8,8 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
 import androidx.compose.ui.Modifier
+import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
 
 @Composable
 fun CardComposable(card: CardGeneric) {
