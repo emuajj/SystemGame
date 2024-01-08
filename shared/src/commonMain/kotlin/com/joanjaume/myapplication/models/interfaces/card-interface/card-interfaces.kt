@@ -6,14 +6,14 @@ enum class CardType {
 
 interface ICardGeneric {
     val title: String
-    val type: CardType
+    val type: String
     val description: String
     val name: String
 }
 
 data class CardGeneric(
     override val title: String,
-    override val type: CardType,
+    override val type: String,
     override val description: String,
     override val name: String
 ) : ICardGeneric

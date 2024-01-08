@@ -4,7 +4,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 
 open class CardGeneric(
     val title: String,
-    val type: CardType,
+    val type: String,
     val description: String,
     val name: String
 ) {

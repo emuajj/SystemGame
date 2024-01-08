@@ -1,4 +1,4 @@
-package com.joanjaume.myapplication.android.`view-models`
+package com.joanjaume.myapplication.android.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
