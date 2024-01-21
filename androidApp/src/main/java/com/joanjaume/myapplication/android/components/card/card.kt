@@ -9,10 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
-import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
+import com.joanjaume.myapplication.models.interfaces.cardInterface.*
+
 
 @Composable
-fun CardComposable(card: CardGeneric) {
+fun CardComposable(card: ICardGeneric) {
+    val colorTitle = if (card.type == CardType.CPU) {
+        Color.Red
+    } else {
+        MaterialTheme.colors.primary
+    }
+
+
+
     Card(
         modifier = Modifier
             .padding(16.dp),
@@ -26,7 +35,7 @@ fun CardComposable(card: CardGeneric) {
             Text(
                 text = card.title,
                 style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.primary
+                color = colorTitle
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -45,6 +54,21 @@ fun CardComposable(card: CardGeneric) {
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.onSurface
             )
+            if (card is TaskCard) {
+                Text(
+                    text = "CPU CYCLES :" + card.cpuCycles,
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.onSurface
+                )
+            } else if (card is CpuCard) {
+                Text(
+                    text = "CPU CLOCKSPEED" + card.clockSpeed,
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.onSurface
+                )
+            } else {
+
+            }
         }
     }
 }

@@ -1,35 +1,24 @@
 package com.joanjaume.myapplication.models.deck
 
-import com.joanjaume.myapplication.models.cards.`card-generic`.CardGeneric
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
+import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
 
-class Deck(initializeDeck: Array<CardGeneric>) {
-    private var deckCards = arrayOf<CardGeneric>()
+class Deck() {
+    private var deckCards = listOf<ICardGeneric>()
 
     init {
-        if (initializeDeck.isNotEmpty()) {
-            deckCards = initializeDeck
-        }
     }
 
-    fun getDeck(): Array<CardGeneric> {
+    fun getDeck(): List<ICardGeneric> {
         return deckCards
     }
 
-    fun setDeck(cardArray: Array<CardGeneric>? = null) {
-        if (cardArray != null) {
-            deckCards = cardArray
+    fun setDeck(cardList: List<ICardGeneric>? = null) {
+        if (cardList != null) {
+            deckCards = cardList
         }
-        print(deckCards)
     }
 
-    fun addCard() {
-        deckCards += CardGeneric(
-            "Card 1",
-            CardType.TASK,
-            "Description for Card 1",
-            "John Doe"
-        )
-        print(deckCards)
+    fun addCard(card : ICardGeneric) {
+        deckCards += card
     }
 }
