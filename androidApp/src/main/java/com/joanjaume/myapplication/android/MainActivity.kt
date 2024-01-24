@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                             state.cpuCard?.let { cpuCard ->
                                 CardComposable(card = cpuCard)
                             } ?: run {
-                                CardComposable(card = CpuCard("--",CardType.CPU,"--","--",0))
+                                CardComposable(card = CpuCard(null,"--",CardType.CPU,"--","--",0))
                             }
                             Button(onClick = { viewModel.addCard() }) {
 
