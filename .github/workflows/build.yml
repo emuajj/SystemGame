@@ -1,18 +1,17 @@
-name: Build and Test
+name: CI/CD for System Game
 
 on:
   push:
-    branches:
-      - main
-      - develop
-      - release
+    branches: [ "development","master" ]
+  pull_request:
+    branches: [ "development","master" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Set up JDK
@@ -22,5 +21,24 @@ jobs:
           java-version: '11'
 
       - name: Build and Test
-        run: |
-          ./gradlew build
+        run: ./gradlew build
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Deploy to Production
+        run: ./gradlew publish
+
+# Add additional steps for deployment to specific platforms (iOS, Android, etc.) if needed
