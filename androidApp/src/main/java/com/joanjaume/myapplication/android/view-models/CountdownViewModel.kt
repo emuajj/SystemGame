@@ -7,6 +7,7 @@ import com.joanjaume.myapplication.models.gameModels.CountdownData
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
+import com.joanjaume.myapplication.models.interfaces.cardInterface.ITaskCard
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +19,7 @@ data class CountDownUiState(
     var deck: List<ICardGeneric> = emptyList(),
     var ganttTasks: Map<Int, GanttTask> = emptyMap(),
     var cpuCard: CpuCard? = null,
-    var countdownSeconds: Int = 0
+    var countdownSeconds: Int = 10
 )
 
 
@@ -37,6 +38,7 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
         startCountdown(20, ::handleTimeFinished)
         viewModelScope.launch {
             _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
+            _countDownUiState.value.ganttTasks = countdownData.getGantt()
         }
     }
 
@@ -57,14 +59,16 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
         }
     }
 
-    private fun setGantt(gant:GanttChart) {
-        countdownData.setGantt(gant)
+
+    private fun setGantt(ganttTasks: Map<Int, GanttTask>) {
         viewModelScope.launch {
-            _countDownUiState.value = _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+            _countDownUiState.value = _countDownUiState.value.copy(ganttTasks = ganttTasks)
         }
     }
 
-    private fun getGantt() : Map<Int, GanttTask> {
+
+
+    private fun getGantt(): Map<Int, GanttTask> {
         return _countDownUiState.value.ganttTasks
     }
 
@@ -81,8 +85,15 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
                     println("Type 1 card clicked: $card")
                 }
                 CardType.TASK -> {
-                    // Handle Type 2 card
                     println("Type 2 card clicked: $card")
+                    if (card is ITaskCard) {
+                        card.cardId?.let { cardId ->
+                            countdownData.removeOneCardFromDeck(cardId)
+                            countdownData.addCardToGantt(card)
+                            setDeck()
+                            setGantt(countdownData.getGantt())
+                        }
+                    }
                 }
                 // Add more cases as needed for other card types
                 else -> {

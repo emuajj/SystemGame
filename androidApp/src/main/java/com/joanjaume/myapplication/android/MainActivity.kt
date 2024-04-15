@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.material.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.android.components.card.CardComposable
@@ -40,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         0
                     )
 
-                    Column() {
+                    Column(modifier = Modifier.fillMaxSize()) {
                         Row() {
                             state.cpuCard?.let { cpuCard ->
                                 CardComposable(
@@ -62,25 +61,26 @@ class MainActivity : ComponentActivity() {
                                 Text(text = state.countdownSeconds.toString())
                             }
                         }
-                        // Integrating GanttChartComponent with required parameters
+                        // Give GanttChartComponent a weight so it doesn't consume all vertical space
                         GanttChartComponent(
                             tasks = state.ganttTasks,
-                            chartWidth = 400.dp, // Specify your desired width
-                            chartHeight = 200.dp, // Specify your desired height
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f), // Adjust the weight as needed to balance with the LazyRow
                             maxTime = 24L // Assume 24 as max time, adjust as necessary
                         )
+                        // Ensure LazyRow is always visible at the bottom
                         LazyRow(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(bottom = 16.dp)
-                                .wrapContentHeight(Alignment.Bottom)
+                                .fillMaxWidth()
+                                .weight(0.5f) // Adjust this weight to control its vertical space
                         ) {
                             items(state.deck) { card ->
                                 CardComposable(
                                     card,
                                     handleClickCard = { viewModel.handleClickCard(card) }
                                 )
-                                Spacer(modifier = Modifier.height(16.dp))
+                                Spacer(modifier = Modifier.width(16.dp))
                             }
                         }
                     }

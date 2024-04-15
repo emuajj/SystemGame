@@ -21,4 +21,8 @@ class Deck() {
     fun addCard(card : ICardGeneric) {
         deckCards += card
     }
+
+    fun removeCard(cardId: Int) {
+        deckCards = deckCards.filter { it.cardId != cardId }.toMutableList()
+    }
 }

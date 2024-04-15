@@ -30,4 +30,9 @@ class GameBoard(deck: Deck) {
     fun getGanttChartt(): Map<Int, GanttTask> {
         return ganttChart.getGanttChartt()
     }
+
+    fun addTaskToGantt(taskCard: ITaskCard) {
+        val ganttTask = taskCard as? GanttTask ?: return  // Ensure taskCard is a GanttTask, or handle conversion if necessary
+        ganttChart.addTask(ganttTask)  // Add task to the GanttChart managed by GameBoard
+    }
 }

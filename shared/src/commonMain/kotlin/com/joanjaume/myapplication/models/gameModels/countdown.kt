@@ -3,10 +3,7 @@ package com.joanjaume.myapplication.models.gameModels
 import GanttChart
 import com.joanjaume.myapplication.models.deck.Deck
 import com.joanjaume.myapplication.models.gameBoard.GameBoard
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
-import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
-import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
+import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 import com.joanjaume.myapplication.repository.CardProvider
 
@@ -55,8 +52,21 @@ class CountdownData(var difficulty: String) {
         gameBoard.setGantt(gant)
     }
 
-    fun getGantt() : Map<Int, GanttTask>{
-        return gameBoard.ganttChart.getGanttChartt()
+    fun getGantt(): Map<Int, GanttTask> {
+        return gameBoard.getGanttChartt()  // Directly return the Gantt chart map from the GameBoard
     }
+
+
+    fun removeOneCardFromDeck(cardId: Int) {
+        deck.removeCard(cardId)
+    }
+
+
+    fun addCardToGantt(card: ITaskCard) {
+        gameBoard.addTaskToGantt(card)  // Delegate the task addition to the GameBoard
+    }
+
+
+
 
 }

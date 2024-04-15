@@ -8,24 +8,19 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
-
 
 @Composable
 fun GanttChartComponent(
     tasks: Map<Int, GanttTask>,
-    chartWidth: Dp,
-    chartHeight: Dp,
+    modifier: Modifier, // Combined width and height modifiers
     maxTime: Long
 ) {
     Surface(
-        modifier = Modifier
-            .width(chartWidth)
-            .height(chartHeight)
+        modifier = modifier
             .background(color = Color.White)
             .padding(8.dp),
         color = MaterialTheme.colors.surface,
