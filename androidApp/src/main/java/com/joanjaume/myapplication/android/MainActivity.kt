@@ -14,11 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.android.components.card.CardComposable
+import com.joanjaume.myapplication.android.components.gantTable.GanttChartComponent
 import com.joanjaume.myapplication.android.`view-models`.CountdownViewModel
 import com.joanjaume.myapplication.models.gameModels.CountdownData
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,18 +31,44 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel = remember { CountdownViewModel(CountdownData("ez")) }
                     val state by viewModel.countDownUiState.collectAsState()
+                    val cpuCardEmpty = CpuCard(
+                        null,
+                        "--",
+                        CardType.CPU,
+                        "--",
+                        "--",
+                        0
+                    )
 
                     Column() {
                         Row() {
                             state.cpuCard?.let { cpuCard ->
-                                CardComposable(card = cpuCard)
+                                CardComposable(
+                                    card = cpuCard,
+                                    handleClickCard = { viewModel.handleClickCard(cpuCard) }
+                                )
                             } ?: run {
-                                CardComposable(card = CpuCard(null,"--",CardType.CPU,"--","--",0))
+                                CardComposable(
+                                    card = cpuCardEmpty,
+                                    handleClickCard = { viewModel.handleClickCard(cpuCardEmpty) }
+                                )
                             }
-                            Button(onClick = { viewModel.addCard() }) {
-
+                            Box() {
+                                Button(
+                                    onClick = { viewModel.addCard() },
+                                ) {
+                                    Text(text = "Press to add card")
+                                }
+                                Text(text = state.countdownSeconds.toString())
                             }
                         }
+                        // Integrating GanttChartComponent with required parameters
+                        GanttChartComponent(
+                            tasks = state.ganttTasks,
+                            chartWidth = 400.dp, // Specify your desired width
+                            chartHeight = 200.dp, // Specify your desired height
+                            maxTime = 24L // Assume 24 as max time, adjust as necessary
+                        )
                         LazyRow(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -50,7 +76,10 @@ class MainActivity : ComponentActivity() {
                                 .wrapContentHeight(Alignment.Bottom)
                         ) {
                             items(state.deck) { card ->
-                                CardComposable(card)
+                                CardComposable(
+                                    card,
+                                    handleClickCard = { viewModel.handleClickCard(card) }
+                                )
                                 Spacer(modifier = Modifier.height(16.dp))
                             }
                         }

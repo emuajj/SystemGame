@@ -9,3 +9,6 @@ plugins {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+tasks.register("publish") {
+    // Your deployment configuration goes here
+}

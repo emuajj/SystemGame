@@ -1,5 +1,6 @@
 package com.joanjaume.myapplication.android.components.card
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,7 +14,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 
 
 @Composable
-fun CardComposable(card: ICardGeneric) {
+fun CardComposable(card: ICardGeneric,handleClickCard: (ICardGeneric) -> Unit) {
     val colorTitle = if (card.type == CardType.CPU) {
         Color.Red
     } else {
@@ -24,9 +25,10 @@ fun CardComposable(card: ICardGeneric) {
 
     Card(
         modifier = Modifier
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable { handleClickCard(card) },
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color.White
+        backgroundColor = Color.White,
     ) {
         Column(
             modifier = Modifier

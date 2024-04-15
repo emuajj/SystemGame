@@ -1,13 +1,8 @@
+import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 import kotlin.jvm.Synchronized
 
-class Task(val name: String, val cpuCycles: Long) {
-    var id: Int = 0
-    var startTime: Long = 0
-    var endTime: Long = 0
-}
-
-class GanttChart {
-    private val tasks: MutableMap<Int, Task> = mutableMapOf()
+class GanttChart() {
+    private val tasks: MutableMap<Int, GanttTask> = mutableMapOf()
     private var nextTaskId = 1
     private var currentTime: Long = 0
 
@@ -16,7 +11,7 @@ class GanttChart {
         return nextTaskId++
     }
 
-    fun addTask(task: Task): Task {
+    fun addTask(task: GanttTask): GanttTask {
         val taskId = generateTaskId()
         task.id = taskId
         tasks[taskId] = task
@@ -41,10 +36,7 @@ class GanttChart {
         }
     }
 
-    fun displayChart() {
-        // Implement Gantt Chart rendering logic here
-        for ((taskId, task) in tasks) {
-            println("Task ID: $taskId, Task: ${task.name}, Start Time: ${task.startTime} seconds, End Time: ${task.endTime} seconds")
-        }
+    fun getGanttChartt(): Map<Int, GanttTask> {
+        return tasks.toMap()
     }
 }
