@@ -1,23 +1,24 @@
-package com.joanjaume.myapplication.android.components.gantTable
+package com.joanjaume.myapplication.android.components.ganttTable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 
 @Composable
 fun GanttChartComponent(
-    tasks: Map<Int, GanttTask>,
-    modifier: Modifier, // Combined width and height modifiers
-    maxTime: Long
+    tasks: Map<Int, GanttTask>, // Your task map
+    modifier: Modifier = Modifier, // Default modifier
+    maxTime: Int // The number of time units to display
 ) {
     Surface(
         modifier = modifier
@@ -26,52 +27,34 @@ fun GanttChartComponent(
         color = MaterialTheme.colors.surface,
         elevation = 4.dp
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // Render Time Iterations
-            Row(modifier = Modifier.padding(end = 4.dp)) {
-                repeat(maxTime.toInt()) { iteration ->
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(1f)
-                            .padding(vertical = 4.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Show iteration number
-                    }
+        Column {
+            // Header row with time units
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text("name", modifier = Modifier.padding(4.dp), style = MaterialTheme.typography.subtitle2)
+                for (time in 1..maxTime) {
+                    Text(time.toString(), modifier = Modifier
+                        .weight(1f)
+                        .padding(4.dp),
+                        style = MaterialTheme.typography.subtitle2
+                    )
                 }
             }
 
-            // Render Tasks and Progress
-            tasks.forEach { (id, task) ->
+            // Rows for each task
+            tasks.values.forEach { task ->
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    // Task Name
-                    Box(
-                        modifier = Modifier
+                    // Task name
+                    Text(task.card.name + task.card.cardId, modifier = Modifier.padding(4.dp), style = MaterialTheme.typography.body2)
+                    // Time units for the task
+                    for (time in 1..maxTime) {
+                        Box(modifier = Modifier
                             .weight(1f)
-                            .padding(vertical = 4.dp)
-                            .aspectRatio(1f)
-                            .background(color = Color.LightGray),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Show task name
-                    }
-
-                    // Task Progress
-                    task.cpuCycles.let { cycles ->
-                        val progress = (task.endTime - task.startTime) / cycles.toFloat()
-                        val progressWidth = (progress * maxTime).toInt()
-
-                        Box(
-                            modifier = Modifier
-                                .weight(5f)
-                                .padding(vertical = 4.dp)
-                                .fillMaxWidth(progressWidth.toFloat() / maxTime.toFloat())
-                                .background(color = Color.Blue)
-                                .clip(RoundedCornerShape(4.dp))
-                        ) {
-                            // Show progress
-                        }
+                            .padding(4.dp)
+                            .background(
+                                if (time >= task.startTime && time <= task.endTime) Color.Red else Color.Transparent
+                            )
+                        )
+                        // The box is colored if within the task duration
                     }
                 }
             }

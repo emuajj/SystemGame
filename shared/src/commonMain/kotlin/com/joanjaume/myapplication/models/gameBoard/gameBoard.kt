@@ -18,12 +18,12 @@ class GameBoard(deck: Deck) {
             if (card.type == CardType.TASK && card is TaskCard) {
                 actualTasks.add(card)
             } else if (card.type == CardType.CPU && card is CpuCard) {
-                    actualCpus.add(card)
+                actualCpus.add(card)
             }
         }
     }
 
-    fun setGantt(ganttChart: GanttChart){
+    fun setGantt(ganttChart: GanttChart) {
         this.ganttChart = ganttChart
     }
 
@@ -31,8 +31,15 @@ class GameBoard(deck: Deck) {
         return ganttChart.getGanttChartt()
     }
 
-    fun addTaskToGantt(taskCard: ITaskCard) {
-        val ganttTask = taskCard as? GanttTask ?: return  // Ensure taskCard is a GanttTask, or handle conversion if necessary
-        ganttChart.addTask(ganttTask)  // Add task to the GanttChart managed by GameBoard
+    fun addTaskToGantt(taskCard: TaskCard) {
+        if (taskCard.cardId != null) {
+            var time = ganttChart.getTime()
+            ganttChart.addTask(
+                GanttTask(
+                    taskCard,
+                    time
+                )
+            )  // Add task to the GanttChart managed by GameBoard
+        }
     }
 }

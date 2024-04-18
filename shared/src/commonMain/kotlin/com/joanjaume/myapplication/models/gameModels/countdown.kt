@@ -36,7 +36,7 @@ class CountdownData(var difficulty: String) {
         )
     }
 
-    fun initDeck() {
+    private fun initDeck() {
         deck.setDeck(cardProvider.getInitialTaskCards())
     }
 
@@ -62,7 +62,7 @@ class CountdownData(var difficulty: String) {
     }
 
 
-    fun addCardToGantt(card: ITaskCard) {
+    fun addCardToGantt(card: TaskCard) {
         gameBoard.addTaskToGantt(card)  // Delegate the task addition to the GameBoard
     }
 

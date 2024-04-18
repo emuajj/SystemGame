@@ -4,10 +4,7 @@ import GanttChart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joanjaume.myapplication.models.gameModels.CountdownData
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
-import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
-import com.joanjaume.myapplication.models.interfaces.cardInterface.ITaskCard
+import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -60,9 +57,12 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
     }
 
 
-    private fun setGantt(ganttTasks: Map<Int, GanttTask>) {
+    private fun updateGantt(){
+
+    }
+    private fun setGantt() {
         viewModelScope.launch {
-            _countDownUiState.value = _countDownUiState.value.copy(ganttTasks = ganttTasks)
+            _countDownUiState.value = _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
         }
     }
 
@@ -79,19 +79,22 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
     fun handleClickCard(card: ICardGeneric) {
         card.type.let { cardType ->
             when (cardType) {
-                // Handle different types of cards
                 CardType.CPU -> {
                     // OPEN MODAL TO SEE COMPLETE CPU DETAILS
-                    println("Type 1 card clicked: $card")
+                    if (card is ICpuCard) {
+                        viewModelScope.launch {
+                            _countDownUiState.value.cpuCard = card as CpuCard
+                        }
+                    }
                 }
                 CardType.TASK -> {
-                    println("Type 2 card clicked: $card")
-                    if (card is ITaskCard) {
+                    if (card is TaskCard) {
+                        println("Type 2 card clicked: $card")
                         card.cardId?.let { cardId ->
                             countdownData.removeOneCardFromDeck(cardId)
                             countdownData.addCardToGantt(card)
                             setDeck()
-                            setGantt(countdownData.getGantt())
+                            setGantt()
                         }
                     }
                 }

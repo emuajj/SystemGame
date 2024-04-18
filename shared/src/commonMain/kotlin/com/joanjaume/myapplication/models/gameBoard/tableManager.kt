@@ -24,17 +24,21 @@ class GanttChart() {
 
     fun iterateTime() {
         currentTime++
-        updateTaskTimes()
+//        updateTaskTimes()
     }
 
-    private fun updateTaskTimes() {
-        for ((taskId, task) in tasks) {
-            if (task.startTime == 0L) {
-                task.startTime = currentTime
-            }
-            task.endTime = task.startTime + task.cpuCycles
-        }
+    fun getTime() : Long{
+        return currentTime
     }
+
+//    private fun updateTaskTimes() {
+//        for ((taskId, task) in tasks) {
+//            if (task.startTime == 0L) {
+//                task.startTime = currentTime
+//            }
+//            task.endTime = task.startTime + task.cpuCycles
+//        }
+//    }
 
     fun getGanttChartt(): Map<Int, GanttTask> {
         return tasks.toMap()

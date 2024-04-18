@@ -35,10 +35,11 @@ fun CardComposable(card: ICardGeneric,handleClickCard: (ICardGeneric) -> Unit) {
                 .padding(16.dp)
         ) {
             Text(
-                text = card.title,
+                text = card.title + ":" + card.cardId,
                 style = MaterialTheme.typography.h6,
                 color = colorTitle
             )
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Name: ${card.name}",

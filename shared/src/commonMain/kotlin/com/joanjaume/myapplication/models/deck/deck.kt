@@ -3,7 +3,8 @@ package com.joanjaume.myapplication.models.deck
 import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
 
 class Deck() {
-    private var deckCards = listOf<ICardGeneric>()
+    private var deckCards = mutableListOf<ICardGeneric>()
+    private var nextDeckId = 1  // Starting ID value
 
     init {
     }
@@ -14,12 +15,33 @@ class Deck() {
 
     fun setDeck(cardList: List<ICardGeneric>? = null) {
         if (cardList != null) {
-            deckCards = cardList
+            println("PASS")
+            deckCards = mutableListOf()  // Initialize a new mutable list
+
+            // Identify the maximum ID currently in use to avoid overwriting existing IDs
+            val existingIds = cardList.mapNotNull { it.cardId }.toSet()
+            var maxExistingId = existingIds.maxOrNull() ?: 0
+
+            // Start nextDeckId from the next available number after the highest existing ID
+            nextDeckId = maxExistingId + 1
+
+            // Assign new IDs to cards without an ID and add them to the deck
+            cardList.forEach { card ->
+                if (card.cardId == null || existingIds.contains(card.cardId)) {
+                    while (existingIds.contains(nextDeckId)) {
+                        nextDeckId++  // Ensure we skip any IDs that are already in use
+                    }
+                    card.cardId = nextDeckId++
+                }
+                deckCards.add(card)
+            }
         }
     }
 
+
     fun addCard(card : ICardGeneric) {
-        deckCards += card
+        card.cardId = nextDeckId++
+        deckCards.add(card)
     }
 
     fun removeCard(cardId: Int) {

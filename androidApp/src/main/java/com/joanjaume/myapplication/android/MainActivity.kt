@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.android.components.card.CardComposable
-import com.joanjaume.myapplication.android.components.gantTable.GanttChartComponent
+import com.joanjaume.myapplication.android.components.ganttTable.GanttChartComponent
 import com.joanjaume.myapplication.android.`view-models`.CountdownViewModel
 import com.joanjaume.myapplication.models.gameModels.CountdownData
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f), // Adjust the weight as needed to balance with the LazyRow
-                            maxTime = 24L // Assume 24 as max time, adjust as necessary
+                            maxTime = 6 // Assume 24 as max time, adjust as necessary
                         )
                         // Ensure LazyRow is always visible at the bottom
                         LazyRow(

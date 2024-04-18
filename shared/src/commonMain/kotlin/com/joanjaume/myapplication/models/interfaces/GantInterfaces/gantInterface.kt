@@ -1,8 +1,11 @@
 package com.joanjaume.myapplication.models.interfaces.gantInterface
 
+import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 
-class GanttTask(val name: String, val cpuCycles: Long) {
-    var id: Int = 0
-    var startTime: Long = 0
-    var endTime: Long = 0
+
+class GanttTask(card :TaskCard,time :Long) {
+    var id: Int = card.cardId!!
+    var startTime: Long = time
+    var endTime: Long = time + card.cpuCycles
+    var card: TaskCard = card
 }
