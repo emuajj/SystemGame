@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f), // Adjust the weight as needed to balance with the LazyRow
-                            maxTime = 6 // Assume 24 as max time, adjust as necessary
+                            maxTime = 6 // Assume 24 as max time, adjust as necessaryy
                         )
                         // Ensure LazyRow is always visible at the bottom
                         LazyRow(
