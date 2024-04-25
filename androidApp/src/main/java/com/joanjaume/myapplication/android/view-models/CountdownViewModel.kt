@@ -1,6 +1,5 @@
 package com.joanjaume.myapplication.android.`view-models`
 
-import GanttChart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joanjaume.myapplication.models.gameModels.CountdownData
@@ -16,7 +15,8 @@ data class CountDownUiState(
     var deck: List<ICardGeneric> = emptyList(),
     var ganttTasks: Map<Int, GanttTask> = emptyMap(),
     var cpuCard: CpuCard? = null,
-    var countdownSeconds: Int = 10
+    var countdownSeconds: Int = 1000,
+    var timeCount : Long = 0
 )
 
 
@@ -32,7 +32,7 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
 
     init {
         initCountDown()
-        startCountdown(20, ::handleTimeFinished)
+        startCountdown(200, ::handleTimeFinished)
         viewModelScope.launch {
             _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
             _countDownUiState.value.ganttTasks = countdownData.getGantt()
@@ -60,9 +60,14 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
     private fun updateGantt(){
 
     }
-    private fun setGantt() {
+    private fun setGantt(iteration: Long?) {
+
         viewModelScope.launch {
             _countDownUiState.value = _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+            if(iteration !== null){
+                _countDownUiState.value.timeCount = iteration
+
+            }
         }
     }
 
@@ -94,7 +99,7 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
                             countdownData.removeOneCardFromDeck(cardId)
                             countdownData.addCardToGantt(card)
                             setDeck()
-                            setGantt()
+                            setGantt(null)
                         }
                     }
                 }
@@ -105,6 +110,10 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
                 }
             }
         }
+    }
+
+    fun IterateTime () {
+        setGantt(countdownData.IterateTime())
     }
 
 

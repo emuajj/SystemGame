@@ -56,6 +56,10 @@ class CountdownData(var difficulty: String) {
         return gameBoard.getGanttChartt()  // Directly return the Gantt chart map from the GameBoard
     }
 
+    fun IterateTime() : Long{
+        return gameBoard.IterateTime()
+    }
+
 
     fun removeOneCardFromDeck(cardId: Int) {
         deck.removeCard(cardId)

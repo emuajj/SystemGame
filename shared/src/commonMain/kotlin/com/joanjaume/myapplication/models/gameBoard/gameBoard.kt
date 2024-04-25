@@ -31,6 +31,10 @@ class GameBoard(deck: Deck) {
         return ganttChart.getGanttChartt()
     }
 
+    fun IterateTime() : Long {
+        return ganttChart.iterateTime()
+    }
+
     fun addTaskToGantt(taskCard: TaskCard) {
         if (taskCard.cardId != null) {
             var time = ganttChart.getTime()

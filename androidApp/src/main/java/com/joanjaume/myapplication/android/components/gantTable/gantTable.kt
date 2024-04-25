@@ -3,6 +3,7 @@ package com.joanjaume.myapplication.android.components.ganttTable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -16,9 +17,10 @@ import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 
 @Composable
 fun GanttChartComponent(
-    tasks: Map<Int, GanttTask>, // Your task map
-    modifier: Modifier = Modifier, // Default modifier
-    maxTime: Int // The number of time units to display
+    tasks: Map<Int, GanttTask>,
+    iteration : Long,
+    modifier: Modifier = Modifier,
+    maxTime: Int
 ) {
     Surface(
         modifier = modifier
@@ -30,33 +32,55 @@ fun GanttChartComponent(
         Column {
             // Header row with time units
             Row(modifier = Modifier.fillMaxWidth()) {
-                Text("name", modifier = Modifier.padding(4.dp), style = MaterialTheme.typography.subtitle2)
+                Text("name", modifier = Modifier.width(60.dp).padding(4.dp), style = MaterialTheme.typography.subtitle2)
                 for (time in 1..maxTime) {
-                    Text(time.toString(), modifier = Modifier
-                        .weight(1f)
-                        .padding(4.dp),
-                        style = MaterialTheme.typography.subtitle2
-                    )
+                    Spacer(modifier = Modifier.width(4.dp)) // Adjust spacing as necessary
+                    // Determine the background color based on whether iteration equals time
+                    val backgroundColor = if (iteration >= time.toLong()) Color.Green else Color.Transparent
+
+                    // Wrap the Text in a Box to set the background
+                    Box(
+                        modifier = Modifier
+                            .width(60.dp) // Match width with the header
+                            .padding(4.dp)
+                            .background(backgroundColor) // Set the background color
+                            .padding(4.dp) // Padding inside the Box, around the Text
+                    ) {
+                        Text(
+                            text = time.toString(),
+                            style = MaterialTheme.typography.subtitle2
+                        )
+                    }
                 }
             }
+
+            // Horizontal divider after the header
+            Divider(color = Color.LightGray, thickness = 1.dp)
 
             // Rows for each task
             tasks.values.forEach { task ->
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    // Task name
-                    Text(task.card.name + task.card.cardId, modifier = Modifier.padding(4.dp), style = MaterialTheme.typography.body2)
+                    Text(
+                        text = task.card.name + task.card.cardId,
+                        modifier = Modifier.width(60.dp).padding(4.dp), // Match width with the header
+                        style = MaterialTheme.typography.body2
+                    )
                     // Time units for the task
                     for (time in 1..maxTime) {
+                        Spacer(modifier = Modifier.width(4.dp)) // Adjust spacing as necessary
                         Box(modifier = Modifier
-                            .weight(1f)
+                            .width(60.dp) // Match width with the header
                             .padding(4.dp)
+                            .clip(RoundedCornerShape(4.dp)) // Optional: clip to round corners
                             .background(
                                 if (time >= task.startTime && time <= task.endTime) Color.Red else Color.Transparent
                             )
                         )
-                        // The box is colored if within the task duration
                     }
                 }
+
+                // Horizontal divider after each task
+                Divider(color = Color.LightGray, thickness = 1.dp)
             }
         }
     }

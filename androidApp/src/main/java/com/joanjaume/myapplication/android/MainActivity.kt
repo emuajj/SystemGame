@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.material.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.android.components.card.CardComposable
@@ -52,18 +53,33 @@ class MainActivity : ComponentActivity() {
                                     handleClickCard = { viewModel.handleClickCard(cpuCardEmpty) }
                                 )
                             }
-                            Box() {
-                                Button(
-                                    onClick = { viewModel.addCard() },
+                            Box(
+                                contentAlignment = Alignment.Center // Aligns children in the center of the Box
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally, // Centers children horizontally in the column
+                                    verticalArrangement = Arrangement.spacedBy(8.dp) // Provides space between children in the column
                                 ) {
-                                    Text(text = "Press to add card")
+                                    Button(
+                                        onClick = { viewModel.addCard() }
+                                    ) {
+                                        Text(text = "Press to add card")
+                                    }
+                                    Button(
+                                        onClick = { viewModel.IterateTime() }
+                                    ) {
+                                        Text(text = "IterateTime")
+                                    }
+                                    Text(text = "Time left :" + state.countdownSeconds.toString())
+                                    Text(text = "Iteration :" + state.timeCount.toString())
                                 }
-                                Text(text = state.countdownSeconds.toString())
                             }
+
                         }
                         // Give GanttChartComponent a weight so it doesn't consume all vertical space
                         GanttChartComponent(
                             tasks = state.ganttTasks,
+                            iteration = state.timeCount,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f), // Adjust the weight as needed to balance with the LazyRow

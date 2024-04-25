@@ -22,8 +22,9 @@ class GanttChart() {
         tasks.remove(taskId)
     }
 
-    fun iterateTime() {
+    fun iterateTime(): Long {
         currentTime++
+        return currentTime;
 //        updateTaskTimes()
     }
 
