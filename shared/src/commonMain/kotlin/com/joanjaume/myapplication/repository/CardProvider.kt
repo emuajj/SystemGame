@@ -1,0 +1,29 @@
+package com.joanjaume.myapplication.repository
+
+
+import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
+import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
+import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
+import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
+
+class CardProvider {
+
+    fun getInitialTaskCards(): List<ICardGeneric> {
+        return predefinedTaskCards
+    }
+
+    fun getCpuCard(): ICardGeneric {
+        return predefinedCpuCard
+    }
+
+}
+
+private val predefinedTaskCards: List<ICardGeneric> = listOf(
+    TaskCard(null,"Card 1", CardType.TASK, "Description for Card 1", "TASK", 4, 1),
+    TaskCard(null,"Card 2", CardType.TASK, "Description for Card 2", "TASK", 4, 2),
+    TaskCard(null,"Card 2", CardType.TASK, "Description for Card 2", "TASK", 4, 3)
+    // Add more predefined cards as needed
+)
+
+private val predefinedCpuCard: ICardGeneric =
+    CpuCard(null,"CpuCard", CardType.CPU, "CpuCard", "CPU 1", 1)
