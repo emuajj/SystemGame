@@ -1,5 +1,6 @@
 package com.joanjaume.myapplication.android.components.ganttTable
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +19,7 @@ import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 @Composable
 fun GanttChartComponent(
     tasks: Map<Int, GanttTask>,
-    iteration : Long,
+    iteration: Long,
     modifier: Modifier = Modifier,
     maxTime: Int
 ) {
@@ -32,11 +33,18 @@ fun GanttChartComponent(
         Column {
             // Header row with time units
             Row(modifier = Modifier.fillMaxWidth()) {
-                Text("name", modifier = Modifier.width(60.dp).padding(4.dp), style = MaterialTheme.typography.subtitle2)
+                Text(
+                    "name",
+                    modifier = Modifier
+                        .width(60.dp)
+                        .padding(4.dp),
+                    style = MaterialTheme.typography.subtitle2
+                )
                 for (time in 1..maxTime) {
                     Spacer(modifier = Modifier.width(4.dp)) // Adjust spacing as necessary
                     // Determine the background color based on whether iteration equals time
-                    val backgroundColor = if (iteration >= time.toLong()) Color.Green else Color.Transparent
+                    val backgroundColor =
+                        if (iteration >= time.toLong()) Color.Green else Color.Transparent
 
                     // Wrap the Text in a Box to set the background
                     Box(
@@ -62,19 +70,23 @@ fun GanttChartComponent(
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = task.card.name + task.card.cardId,
-                        modifier = Modifier.width(60.dp).padding(4.dp), // Match width with the header
+                        modifier = Modifier
+                            .width(60.dp)
+                            .padding(4.dp), // Match width with the header
                         style = MaterialTheme.typography.body2
                     )
                     // Time units for the task
                     for (time in 1..maxTime) {
                         Spacer(modifier = Modifier.width(4.dp)) // Adjust spacing as necessary
-                        Box(modifier = Modifier
-                            .width(60.dp) // Match width with the header
-                            .padding(4.dp)
-                            .clip(RoundedCornerShape(4.dp)) // Optional: clip to round corners
-                            .background(
-                                if (time >= task.startTime && time <= task.endTime) Color.Red else Color.Transparent
-                            )
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    if (iteration >= time.toLong() && time.toLong() >= task.startTime && time.toLong() <= task.endTime) Color.Red else Color.Transparent // Changed from Transparent to Gray
+
+                                )
+                                .width(60.dp) // Match width with the header
+                                .padding(4.dp)
+                                .clip(RoundedCornerShape(4.dp)) // Optional: clip to round corner
                         )
                     }
                 }

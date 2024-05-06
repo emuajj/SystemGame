@@ -93,6 +93,7 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
                     }
                 }
                 CardType.TASK -> {
+                    iterateTime()
                     if (card is TaskCard) {
                         println("Type 2 card clicked: $card")
                         card.cardId?.let { cardId ->
@@ -112,7 +113,7 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
         }
     }
 
-    fun IterateTime () {
+    fun iterateTime () {
         setGantt(countdownData.IterateTime())
     }
 

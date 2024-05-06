@@ -28,7 +28,7 @@ class GanttChart() {
 //        updateTaskTimes()
     }
 
-    fun getTime() : Long{
+    fun getTime(): Long {
         return currentTime
     }
 
@@ -41,7 +41,7 @@ class GanttChart() {
 //        }
 //    }
 
-    fun getGanttChartt(): Map<Int, GanttTask> {
+    fun getGanttChart(): Map<Int, GanttTask> {
         return tasks.toMap()
     }
 }

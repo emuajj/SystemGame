@@ -30,7 +30,7 @@ data class TaskCard(
     override val description: String,
     override val name: String,
     override val cueTime: Int,
-    override val cpuCycles: Int,
+    override var cpuCycles: Int,
 ) : ITaskCard
 
 data class CpuCard(
@@ -40,4 +40,18 @@ data class CpuCard(
     override val description: String,
     override val name: String,
     override val clockSpeed: Int,
-) : ICpuCard
+) : ICpuCard {
+    private var currentTask: TaskCard? = null  // Track the current task
+
+    fun isAvailable(): Boolean {
+        return currentTask == null  // CPU is available if there's no current task
+    }
+
+    fun assignTask(task: TaskCard) {
+        currentTask = task  // Assign a new task to this CPU
+    }
+
+    fun releaseTask() {
+        currentTask = null  // Release the current task
+    }
+}

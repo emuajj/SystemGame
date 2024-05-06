@@ -4,9 +4,9 @@ import GanttChart
 import com.joanjaume.myapplication.models.deck.Deck
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
-import com.joanjaume.myapplication.models.interfaces.cardInterface.ITaskCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
+import com.joanjaume.myapplication.models.interfaces.gantInterface.ITaskStates
 
 class GameBoard(deck: Deck) {
     var actualTasks: MutableList<TaskCard> = mutableListOf()
@@ -15,10 +15,9 @@ class GameBoard(deck: Deck) {
 
     init {
         for (card in deck.getDeck()) {
-            if (card.type == CardType.TASK && card is TaskCard) {
-                actualTasks.add(card)
-            } else if (card.type == CardType.CPU && card is CpuCard) {
-                actualCpus.add(card)
+            when (card) {
+                is TaskCard -> actualTasks.add(card)
+                is CpuCard -> actualCpus.add(card)
             }
         }
     }
@@ -27,23 +26,18 @@ class GameBoard(deck: Deck) {
         this.ganttChart = ganttChart
     }
 
-    fun getGanttChartt(): Map<Int, GanttTask> {
-        return ganttChart.getGanttChartt()
+    fun getGanttChart(): Map<Int, GanttTask> {
+        return ganttChart.getGanttChart()
     }
 
-    fun IterateTime() : Long {
+    fun iterateTime(): Long {
         return ganttChart.iterateTime()
     }
 
     fun addTaskToGantt(taskCard: TaskCard) {
         if (taskCard.cardId != null) {
             var time = ganttChart.getTime()
-            ganttChart.addTask(
-                GanttTask(
-                    taskCard,
-                    time
-                )
-            )  // Add task to the GanttChart managed by GameBoard
+            ganttChart.addTask(GanttTask(taskCard, time))
         }
     }
 }

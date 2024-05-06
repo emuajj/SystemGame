@@ -1,6 +1,7 @@
 package com.joanjaume.myapplication.models.deck
 
 import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
+import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 
 class Deck() {
     private var deckCards = mutableListOf<ICardGeneric>()
@@ -47,4 +48,5 @@ class Deck() {
     fun removeCard(cardId: Int) {
         deckCards = deckCards.filter { it.cardId != cardId }.toMutableList()
     }
+
 }

@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                                         Text(text = "Press to add card")
                                     }
                                     Button(
-                                        onClick = { viewModel.IterateTime() }
+                                        onClick = { viewModel.iterateTime() }
                                     ) {
                                         Text(text = "IterateTime")
                                     }

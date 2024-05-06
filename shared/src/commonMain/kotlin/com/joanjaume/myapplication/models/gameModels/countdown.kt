@@ -53,11 +53,11 @@ class CountdownData(var difficulty: String) {
     }
 
     fun getGantt(): Map<Int, GanttTask> {
-        return gameBoard.getGanttChartt()  // Directly return the Gantt chart map from the GameBoard
+        return gameBoard.getGanttChart()  // Directly return the Gantt chart map from the GameBoard
     }
 
     fun IterateTime() : Long{
-        return gameBoard.IterateTime()
+        return gameBoard.iterateTime()
     }
 
 
