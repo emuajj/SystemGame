@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.remember
 import androidx.compose.material.*
 import androidx.compose.runtime.collectAsState
@@ -80,6 +81,7 @@ class MainActivity : ComponentActivity() {
                         GanttChartComponent(
                             tasks = state.ganttTasks,
                             iteration = state.timeCount,
+                            shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f), // Adjust the weight as needed to balance with the LazyRow

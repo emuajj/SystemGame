@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 
@@ -21,6 +22,7 @@ fun GanttChartComponent(
     tasks: Map<Int, GanttTask>,
     iteration: Long,
     modifier: Modifier = Modifier,
+    shape: Shape,
     maxTime: Int
 ) {
     Surface(
@@ -28,7 +30,8 @@ fun GanttChartComponent(
             .background(color = Color.White)
             .padding(8.dp),
         color = MaterialTheme.colors.surface,
-        elevation = 4.dp
+        elevation = 4.dp,
+        shape = shape
     ) {
         Column {
             // Header row with time units
