@@ -16,7 +16,7 @@ data class CountDownUiState(
     var ganttTasks: Map<Int, GanttTask> = emptyMap(),
     var cpuCard: CpuCard? = null,
     var countdownSeconds: Int = 1000,
-    var timeCount : Long = 0
+    var timeCount: Long = 0
 )
 
 
@@ -32,11 +32,11 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
 
     init {
         initCountDown()
-        startCountdown(200, ::handleTimeFinished)
         viewModelScope.launch {
             _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
             _countDownUiState.value.ganttTasks = countdownData.getGantt()
         }
+        startCountdown(200, ::handleTimeFinished)
     }
 
     private fun initCountDown() {
@@ -56,21 +56,28 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
         }
     }
 
+    private fun setCpuCard() {
+        viewModelScope.launch {
+            _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
+        }
+    }
 
-    private fun updateGantt(){
+
+    private fun updateGantt() {
 
     }
+
     private fun setGantt(iteration: Long?) {
 
         viewModelScope.launch {
-            _countDownUiState.value = _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
-            if(iteration !== null){
+            _countDownUiState.value =
+                _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+            if (iteration !== null) {
                 _countDownUiState.value.timeCount = iteration
 
             }
         }
     }
-
 
 
     private fun getGantt(): Map<Int, GanttTask> {
@@ -86,19 +93,21 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
             when (cardType) {
                 CardType.CPU -> {
                     // OPEN MODAL TO SEE COMPLETE CPU DETAILS
-                    if (card is ICpuCard) {
-                        viewModelScope.launch {
-                            _countDownUiState.value.cpuCard = card as CpuCard
+                    if (card is CpuCard) {
+                        card.cardId?.let { cardId ->
+                            countdownData.setCpuCard(listOf(card))
+                            countdownData.removeOneCardFromDeck(cardId)
+                            setCpuCard()
+                            setDeck()
                         }
                     }
                 }
                 CardType.TASK -> {
                     iterateTime()
                     if (card is TaskCard) {
-                        println("Type 2 card clicked: $card")
                         card.cardId?.let { cardId ->
                             countdownData.removeOneCardFromDeck(cardId)
-                            countdownData.addCardToGantt(card)
+                            countdownData.onTaskCardClicked(card)
                             setDeck()
                             setGantt(null)
                         }
@@ -113,8 +122,8 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
         }
     }
 
-    fun iterateTime () {
-        setGantt(countdownData.IterateTime())
+    fun iterateTime() {
+        setGantt(countdownData.iterateTime())
     }
 
 

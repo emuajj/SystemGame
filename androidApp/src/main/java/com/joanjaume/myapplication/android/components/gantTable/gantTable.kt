@@ -84,7 +84,11 @@ fun GanttChartComponent(
                         Box(
                             modifier = Modifier
                                 .background(
-                                    if (iteration >= time.toLong() && time.toLong() >= task.startTime && time.toLong() <= task.endTime) Color.Red else Color.Transparent // Changed from Transparent to Gray
+                                    if (task.startTime !== null && task.endTime !== null) {
+                                        if (iteration >= time.toLong() && time.toLong() >= task.startTime!! && time.toLong() <= task.endTime!!) Color.Red else Color.Transparent // Changed from Transparent to Gray
+                                    } else {
+                                        Color.Transparent
+                                    }
 
                                 )
                                 .width(60.dp) // Match width with the header

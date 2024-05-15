@@ -1,54 +1,49 @@
 package com.joanjaume.myapplication.models.gameModels
 
 import GanttChart
-import com.joanjaume.myapplication.models.deck.Deck
 import com.joanjaume.myapplication.models.gameBoard.GameBoard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 import com.joanjaume.myapplication.repository.CardProvider
 
-class CountdownData(var difficulty: String) {
-    private var deck = Deck()
-    private var cardProvider: CardProvider = CardProvider();
-    private lateinit var gameBoard: GameBoard
 
-    fun initCountdown(){
+class CountdownData(var difficulty: String) {
+    private var cardProvider: CardProvider = CardProvider();
+    private lateinit var gameBoard: GameBoard;
+
+    fun initCountdown() {
+        gameBoard = GameBoard()
         initDeck()
-        initCpuCard()
-        gameBoard = GameBoard(deck)
+        initCpu()
     }
 
     fun getDeck(): List<ICardGeneric> {
-        return deck.getDeck()
+        return gameBoard.getDeck()
     }
 
     fun addCard() {
-        deck.addCard(
-            TaskCard(
-                null,
-                "Card 1",
-                CardType.TASK,
-                "Description for Card 1",
-                "John Doe",
-                5,
-                3
-            )
-        )
+        gameBoard.addCardToDeck()
     }
 
     private fun initDeck() {
-        deck.setDeck(cardProvider.getInitialTaskCards())
+        gameBoard.setDeck(cardProvider.getInitialTaskCards())
+        print("tasks ${cardProvider.getInitialTaskCards()}")
     }
 
-    private fun initCpuCard () {
-        deck.addCard(cardProvider.getCpuCard())
+    private fun initCpu() {
+        gameBoard.handleChangeCpus(listOf(cardProvider.getCpuCard()))
+
     }
 
-    fun getCpuCard() : MutableList<CpuCard> {
-        return gameBoard.actualCpus
+    fun getCpuCard(): List<CpuCard> {
+        return gameBoard.getCpus()
     }
 
-    fun setGantt(gant : GanttChart){
+    fun setCpuCard(cards: List<CpuCard>) {
+        return gameBoard.handleChangeCpus(cards)
+    }
+
+    fun setGantt(gant: GanttChart) {
         gameBoard.setGantt(gant)
     }
 
@@ -56,21 +51,23 @@ class CountdownData(var difficulty: String) {
         return gameBoard.getGanttChart()  // Directly return the Gantt chart map from the GameBoard
     }
 
-    fun IterateTime() : Long{
+    fun iterateTime(): Long {
         return gameBoard.iterateTime()
     }
 
 
     fun removeOneCardFromDeck(cardId: Int) {
-        deck.removeCard(cardId)
+        gameBoard.removeOneCardFromDeck(cardId)
     }
 
 
     fun addCardToGantt(card: TaskCard) {
-        gameBoard.addTaskToGantt(card)  // Delegate the task addition to the GameBoard
+        gameBoard.onTaskCardClicked(card)  // Delegate the task addition to the GameBoard
     }
 
-
+    fun onTaskCardClicked(card: TaskCard) {
+        gameBoard.onTaskCardClicked(card)
+    }
 
 
 }

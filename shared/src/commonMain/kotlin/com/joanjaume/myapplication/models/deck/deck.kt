@@ -17,6 +17,7 @@ class Deck() {
     fun setDeck(cardList: List<ICardGeneric>? = null) {
         if (cardList != null) {
             println("PASS")
+
             deckCards = mutableListOf()  // Initialize a new mutable list
 
             // Identify the maximum ID currently in use to avoid overwriting existing IDs
@@ -35,12 +36,13 @@ class Deck() {
                     card.cardId = nextDeckId++
                 }
                 deckCards.add(card)
+                println("list OFFF : $deckCards")
             }
         }
     }
 
 
-    fun addCard(card : ICardGeneric) {
+    fun addCard(card: ICardGeneric) {
         card.cardId = nextDeckId++
         deckCards.add(card)
     }
