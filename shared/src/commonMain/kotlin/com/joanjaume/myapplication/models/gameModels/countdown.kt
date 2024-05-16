@@ -10,23 +10,24 @@ import com.joanjaume.myapplication.repository.CardProvider
 
 class CountdownData {
     private val processQueue = ProcessQueue()
-
-    //    private val scheduler = Sckheduler(processQueue)
+    private val scheduler = Scheduler(processQueue)
     private val deck: Deck = Deck()
     private var processIdCounter = 0
 
-//    fun addUserProcess(card: TaskCard) {
-//        val newProcess = card.copy(id = processIdCounter++)
-//        scheduler.addProcess(newProcess)
-//    }
-//
-//    fun runNextSchedulerStep(algorithm: Int, modality: Int) {
-//        scheduler.runNextStep(algorithm, modality)
-//    }
+    fun addUserProcess(card: TaskCard) {
+        val newProcess = card.copy(id = processIdCounter++)
+        scheduler.addProcess(newProcess)
+        scheduler.runNextStep(1, 1)
+        deck.removeCard(card)
+    }
 
-//    fun getGanttChart(): String {
-//        return scheduler.updateGantt()
-//    }
+    fun runNextSchedulerStep(algorithm: Int, modality: Int) {
+        scheduler.runNextStep(algorithm, modality)
+    }
+
+    fun getGanttChart(): String {
+        return scheduler.updateGantt()
+    }
 
     // Deck management methods
     fun addCardToDeck(card: TaskCard) {
@@ -45,6 +46,18 @@ class CountdownData {
         cards.forEach {
             deck.addCard(it)
         }
+    }
+
+    fun getProcessTable(): List<TaskCard> {
+        return scheduler.getProcessTable();
+    }
+
+    fun getCurrentTime(): Int {
+        return scheduler.currentTime
+    }
+
+    fun iterateTime() {
+        scheduler.runNextStep(1, 1)
     }
 
 //    fun playCard(card: TaskCard) {

@@ -19,9 +19,9 @@ class CardProvider {
 
 
 private val predefinedTaskCards: List<ICardGeneric> = listOf(
-    TaskCard(null, "Card 1", CardType.TASK, "Description for Card 1", 0, 1, 1),
-    TaskCard(null, "Card 2", CardType.TASK, "Description for Card 2", 0, 2, 1),
-    TaskCard(null, "Card 2", CardType.TASK, "Description for Card 2", 0, 3, 1),
+    TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 1),
+    TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1),
+    TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 1),
     TaskCard.CpuCard(null, "CPU CARD", CardType.CPU, "Descripcion for Cpu", 1)
     // Add more predefined cards as needed
 )

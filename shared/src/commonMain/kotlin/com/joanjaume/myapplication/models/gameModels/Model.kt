@@ -15,13 +15,23 @@ class Model {
 
     fun handleClickCard(card: ICardGeneric) {
         if (card.type == CardType.TASK) {
-            countdownData.addCardToDeck(card as TaskCard)
+//            countdownData.addCardToDeck(card as TaskCard)
+            // DO THING
+            countdownData.addUserProcess(card as TaskCard)
         }
     }
 
 
     fun getDeck(): List<ICardGeneric> {
         return countdownData.getDeckCards()
+    }
+
+    fun getProcessTable(): List<TaskCard> {
+        return countdownData.getProcessTable()
+    }
+
+    fun getCurrentTime(): Int {
+        return countdownData.getCurrentTime()
     }
 
 

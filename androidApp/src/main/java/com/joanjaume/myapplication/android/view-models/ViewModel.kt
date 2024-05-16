@@ -11,10 +11,10 @@ import kotlinx.coroutines.launch
 
 data class ModelUiState(
     var deck: List<ICardGeneric> = emptyList(),
-    var ganttTasks: Map<Int, TaskCard> = emptyMap(),
+    var ganttTasks: List<TaskCard> = emptyList(),
     var cpuCard: TaskCard.CpuCard? = null,
     var countdownSeconds: Int = 1000,
-    var timeCount: Long = 0,
+    var timeCount: Int = 0,
 )
 
 class ViewModel(private val model: Model) : ViewModel() {
@@ -24,12 +24,16 @@ class ViewModel(private val model: Model) : ViewModel() {
 
     init {
         model.initModel()
+        updateProcessQueue()
+        updateDeck()
     }
 
 
     fun handleClickCard(card: ICardGeneric) {
         model.handleClickCard(card)
         updateDeck()
+        updateProcessQueue()
+        updateCurrentTime()
     }
 
 
@@ -39,12 +43,27 @@ class ViewModel(private val model: Model) : ViewModel() {
 
 
     fun iterateTime() {
-
+        model.countdownData.iterateTime()
+        updateProcessQueue()
+        updateCurrentTime()
     }
 
-    fun updateDeck() {
+    private fun updateDeck() {
         viewModelScope.launch {
             _modelUiState.value = _modelUiState.value.copy(deck = model.getDeck())
+        }
+    }
+
+    private fun updateCurrentTime() {
+        viewModelScope.launch {
+            _modelUiState.value = _modelUiState.value.copy(timeCount = model.getCurrentTime())
+        }
+    }
+
+    private fun updateProcessQueue() {
+        viewModelScope.launch {
+            _modelUiState.value = _modelUiState.value.copy(ganttTasks = model.getProcessTable())
+            println("processQueue ${model.getProcessTable()}")
         }
     }
 }

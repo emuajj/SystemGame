@@ -2,11 +2,16 @@ package com.joanjaume.myapplication.models.scheduler
 
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 import com.joanjaume.myapplication.models.scheduler.process.ProcessQueue
+import kotlin.jvm.JvmName
 
 
 class Scheduler(private val processQueue: ProcessQueue) {
     private val processTable = mutableListOf<TaskCard>()
-    private var currentTime: Int = 0
+    var currentTime: Int = 0
+
+    private val _processTable: List<TaskCard>
+        @JvmName("getProcessTableProperty") get() = processTable.toList()
+
 
     fun addProcess(process: TaskCard) {
         process.lifecycle = MutableList(currentTime + 1) { -1 }
@@ -85,6 +90,10 @@ class Scheduler(private val processQueue: ProcessQueue) {
 
     private fun getCurrentBurst(process: TaskCard): Int {
         return process.lifecycle.count { it == TaskCard.Running }
+    }
+
+    fun getProcessTable(): List<TaskCard> {
+        return _processTable.toList() // Returning a read-only view of the list
     }
 
     object Modality {
