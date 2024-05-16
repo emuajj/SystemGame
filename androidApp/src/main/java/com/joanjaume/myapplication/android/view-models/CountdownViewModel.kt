@@ -1,10 +1,10 @@
 package com.joanjaume.myapplication.android.`view-models`
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joanjaume.myapplication.models.gameModels.CountdownData
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
-import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 
 data class CountDownUiState(
     var deck: List<ICardGeneric> = emptyList(),
-    var ganttTasks: Map<Int, GanttTask> = emptyMap(),
-    var cpuCard: CpuCard? = null,
+    var ganttTasks: Map<Int, TaskCard> = emptyMap(),
+    var cpuCard: TaskCard.CpuCard? = null,
     var countdownSeconds: Int = 1000,
-    var timeCount: Long = 0
+    var timeCount: Long = 0,
 )
 
 
@@ -31,99 +31,162 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
     private var countdownFinishedCallback: (() -> Unit)? = null
 
     init {
-        initCountDown()
-        viewModelScope.launch {
-            _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
-            _countDownUiState.value.ganttTasks = countdownData.getGantt()
-        }
+//        initCountDown()
+//        viewModelScope.launch {
+//            _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
+//            _countDownUiState.value.ganttTasks = countdownData.getGantt()
+//        }
         startCountdown(200, ::handleTimeFinished)
     }
 
-    private fun initCountDown() {
-        countdownData.initCountdown()
-        setDeck()
-    }
+//    private fun initCountDown() {
+//        countdownData.initCountdown()
+//        setDeck()
+//    }
 
 
-    fun addCard() {
-        countdownData.addCard()
-        setDeck()
-    }
+//    private fun setGantt(iteration: Long?) {
+//
+//        viewModelScope.launch {
+//            _countDownUiState.value =
+//                _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+//            if (iteration !== null) {
+//                _countDownUiState.value.timeCount = iteration
+//
+//            }
+//        }
+//    }
 
-    private fun setDeck() {
-        viewModelScope.launch {
-            _countDownUiState.value = _countDownUiState.value.copy(deck = countdownData.getDeck())
-        }
-    }
-
-    private fun setCpuCard() {
-        viewModelScope.launch {
-            _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
-        }
-    }
+//    private fun setDeck() {
+//        viewModelScope.launch {
+//            _countDownUiState.value = _countDownUiState.value.copy(deck = countdownData.getDeck())
+//        }
+//    }
+//
+//    private fun setCpuCard() {
+//        viewModelScope.launch {
+//            _countDownUiState.value.cpuCard = countdownData.getCpuCard().first()
+//        }
+//    }
 
 
     private fun updateGantt() {
 
     }
 
-    private fun setGantt(iteration: Long?) {
+//    private fun setGantt(iteration: Long?) {
+//
+//        viewModelScope.launch {
+//            _countDownUiState.value =
+//                _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+//            if (iteration !== null) {
+//                _countDownUiState.value.timeCount = iteration
+//
+//            }
+//        }
+//    }
 
-        viewModelScope.launch {
-            _countDownUiState.value =
-                _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
-            if (iteration !== null) {
-                _countDownUiState.value.timeCount = iteration
 
-            }
-        }
+//    private fun getGantt(): Map<Int, GanttTask> {
+//        return _countDownUiState.value.ganttTasks
+//    }
+//
+//    private fun getTasks() {
+//
+//    }
+
+//    private fun setGantt(iteration: Long?) {
+//
+//        viewModelScope.launch {
+//            _countDownUiState.value =
+//                _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+//            if (iteration !== null) {
+//                _countDownUiState.value.timeCount = iteration
+//
+//            }
+//        }
+//    }
+
+//    private fun setGantt(iteration: Long?) {
+//
+//        viewModelScope.launch {
+//            _countDownUiState.value =
+//                _countDownUiState.value.copy(ganttTasks = countdownData.getGantt())
+//            if (iteration !== null) {
+//                _countDownUiState.value.timeCount = iteration
+//
+//            }
+//        }
+//    }
+
+
+//    fun onUserClick(card) {
+//        val taskCard = TaskCard(
+//            id = generateId(),
+//            name = name,
+//            arriveTime = arriveTime,
+//            burst = burst,
+//            priority = priority,
+//            description = "A user-created task"
+//        )
+//        countdownData.addUserProcess(taskCard)
+//    }
+
+//    fun runNextSchedulerStep(algorithm: Int, modality: Int) {
+//        countdownData.runNextSchedulerStep(algorithm, modality)
+//    }
+
+//    fun getGanttChart(): String {
+//        return countdownData.getGanttChart()
+//    }
+
+    // Deck management methods
+    fun addCardToDeck(card: TaskCard) {
+        countdownData.addCardToDeck(card)
     }
 
-
-    private fun getGantt(): Map<Int, GanttTask> {
-        return _countDownUiState.value.ganttTasks
+    fun removeCardFromDeck(card: TaskCard) {
+        countdownData.removeCardFromDeck(card)
     }
 
-    private fun getTasks() {
+//    fun getDeckCards(): List<TaskCard> {
+//        return countdownData.getDeckCards()
+//    }
+//
+//    fun playCard(card: TaskCard) {
+//        countdownData.playCard(card)
+//    }
 
-    }
+//    fun handleClickCard(card: ICardGeneric) {
+//        when (card.type) {
+//            CardType.CPU -> {
+//                if (card is TaskCard.CpuCard) {
+//                    // OPEN MODAL TO SEE COMPLETE CPU DETAILS
+//                    // Handle CPU card click logic here
+//                    // For now, we'll just log the card details
+//                    println("CPU Card clicked: $card")
+//                }
+//            }
+//            CardType.TASK -> {
+//                if (card is TaskCard) {
+//                    countdownData.playCard(card)
+//                    // Assuming countdownData and setDeck, setGantt are defined elsewhere in your code
+//                    countdownData.removeOneCardFromDeck(card.id)
+//                    countdownData.onTaskCardClicked(card)
+//                    setDeck()
+//                    setGantt(null)
+//                }
+//            }
+//            else -> {
+//                // Handle default case or unknown card types
+//                println("Unknown card type clicked: $card")
+//            }
+//        }
+//    }
 
-    fun handleClickCard(card: ICardGeneric) {
-        card.type.let { cardType ->
-            when (cardType) {
-                CardType.CPU -> {
-                    // OPEN MODAL TO SEE COMPLETE CPU DETAILS
-                    if (card is CpuCard) {
-                        card.cardId?.let { cardId ->
-                            countdownData.setCpuCard(listOf(card))
-                            countdownData.removeOneCardFromDeck(cardId)
-                            setCpuCard()
-                            setDeck()
-                        }
-                    }
-                }
-                CardType.TASK -> {
-                    iterateTime()
-                    if (card is TaskCard) {
-                        card.cardId?.let { cardId ->
-                            countdownData.removeOneCardFromDeck(cardId)
-                            countdownData.onTaskCardClicked(card)
-                            setDeck()
-                            setGantt(null)
-                        }
-                    }
-                }
-                // Add more cases as needed for other card types
-                else -> {
-                    // Handle default case or unknown card types
-                    println("Unknown card type clicked: $card")
-                }
-            }
-        }
-    }
-
-    fun iterateTime() {
-        setGantt(countdownData.iterateTime())
+    private fun generateId(): Int {
+        // Generate a unique ID for a new task card
+        return (Math.random() * 10000).toInt()
     }
 
 
@@ -157,7 +220,6 @@ class CountdownViewModel(private val countdownData: CountdownData) : ViewModel()
             viewModelScope.launch {
                 _countDownUiState.value = _countDownUiState.value.copy(deck = updatedDeck)
             }
-            handleClickCard(task)
         }
 
         //ADDITIONAL THINGS

@@ -15,11 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.android.components.card.CardComposable
-import com.joanjaume.myapplication.android.components.ganttTable.GanttChartComponent
-import com.joanjaume.myapplication.android.`view-models`.CountdownViewModel
-import com.joanjaume.myapplication.models.gameModels.CountdownData
+import com.joanjaume.myapplication.android.`view-models`.ViewModel
+import com.joanjaume.myapplication.models.gameModels.Model
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
+import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,15 +29,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val viewModel = remember { CountdownViewModel(CountdownData("ez")) }
-                    val state by viewModel.countDownUiState.collectAsState()
-                    val cpuCardEmpty = CpuCard(
+                    val viewModel = remember { ViewModel(Model()) }
+                    val state by viewModel.modelUiState.collectAsState()
+                    val cpuCardEmpty = TaskCard.CpuCard(
                         null,
                         "--",
                         CardType.CPU,
                         "--",
-                        "--",
-                        0
+                        1
                     )
 
                     Column(modifier = Modifier.fillMaxSize()) {
@@ -78,15 +76,15 @@ class MainActivity : ComponentActivity() {
 
                         }
                         // Give GanttChartComponent a weight so it doesn't consume all vertical space
-                        GanttChartComponent(
-                            tasks = state.ganttTasks,
-                            iteration = state.timeCount,
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f), // Adjust the weight as needed to balance with the LazyRow
-                            maxTime = 6 // Assume 24 as max time, adjust as necessaryy
-                        )
+//                        GanttChartComponent(
+//                            tasks = state.ganttTasks,
+//                            iteration = state.timeCount,
+//                            shape = RoundedCornerShape(8.dp),
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .weight(1f), // Adjust the weight as needed to balance with the LazyRow
+//                            maxTime = 6 // Assume 24 as max time, adjust as necessaryy
+//                        )
                         // Ensure LazyRow is always visible at the bottom
                         LazyRow(
                             modifier = Modifier

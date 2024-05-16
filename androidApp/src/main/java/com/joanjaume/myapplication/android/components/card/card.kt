@@ -14,7 +14,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 
 
 @Composable
-fun CardComposable(card: ICardGeneric,handleClickCard: (ICardGeneric) -> Unit) {
+fun CardComposable(card: ICardGeneric, handleClickCard: (ICardGeneric) -> Unit) {
     val colorTitle = if (card.type == CardType.CPU) {
         Color.Red
     } else {
@@ -35,7 +35,7 @@ fun CardComposable(card: ICardGeneric,handleClickCard: (ICardGeneric) -> Unit) {
                 .padding(16.dp)
         ) {
             Text(
-                text = card.title + ":" + card.cardId,
+                text = card.name + ":" + card.id,
                 style = MaterialTheme.typography.h6,
                 color = colorTitle
             )
@@ -53,17 +53,17 @@ fun CardComposable(card: ICardGeneric,handleClickCard: (ICardGeneric) -> Unit) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = card.description,
+                text = card.name,
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.onSurface
             )
             if (card is TaskCard) {
                 Text(
-                    text = "CPU CYCLES :" + card.cpuCycles,
+                    text = "CPU CYCLES :" + card.burst,
                     style = MaterialTheme.typography.body2,
                     color = MaterialTheme.colors.onSurface
                 )
-            } else if (card is CpuCard) {
+            } else if (card is TaskCard.CpuCard) {
                 Text(
                     text = "CPU CLOCKSPEED" + card.clockSpeed,
                     style = MaterialTheme.typography.body2,
