@@ -1,5 +1,7 @@
 package com.joanjaume.myapplication.models.scheduler
 
+import com.joanjaume.myapplication.models.interfaces.cardInterface.Algorithm
+import com.joanjaume.myapplication.models.interfaces.cardInterface.Modality
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 import com.joanjaume.myapplication.models.scheduler.process.ProcessQueue
 import kotlin.jvm.JvmName
@@ -8,16 +10,16 @@ import kotlin.jvm.JvmName
 class Scheduler(private val processQueue: ProcessQueue) {
     private val processTable = mutableListOf<TaskCard>()
     var currentTime: Int = 0
+    var selected: TaskCard? = null
 
     private val _processTable: List<TaskCard>
         @JvmName("getProcessTableProperty") get() = processTable.toList()
-
 
     fun addProcess(process: TaskCard) {
         process.lifecycle = MutableList(currentTime + 1) { -1 }
         processTable.add(process)
         processQueue.enqueue(process)
-        process.state = TaskCard.Ready
+        process.state = TaskCard.New
     }
 
     fun updateGantt(): String {
@@ -29,11 +31,10 @@ class Scheduler(private val processQueue: ProcessQueue) {
     }
 
     fun runNextStep(algorithm: Int, modality: Int) {
-        processTable.sortBy { it.arriveTime }
-        var selected: TaskCard? = null
 
+        // Enqueue arriving processes
         processTable.forEach { process ->
-            if (process.arriveTime == currentTime) {
+            if (process.arriveTime == currentTime && process.state == TaskCard.Ready) {
                 process.lifecycle.add(TaskCard.Blocked)
                 processQueue.enqueue(process)
             }
@@ -47,46 +48,50 @@ class Scheduler(private val processQueue: ProcessQueue) {
             }
         }
 
+        // Select the next process to run
         if (selected == null && processQueue.size() > 0) {
             if (algorithm == Algorithm.SJF && processQueue.size() > 1) {
                 val list = processQueue.getList().sortedBy { it.burst }
                 processQueue.setList(list)
-            } else if (algorithm == Algorithm.PRIORITIES && processQueue.size() > 1) {
+            } else if (algorithm == Modality.PREEMPTIVE && processQueue.size() > 1) {
                 val list = processQueue.getList().sortedBy { it.priority }
                 processQueue.setList(list)
             }
             selected = processQueue.dequeue()
         }
 
+        // Run the selected process for one time unit
         selected?.let { currentProcess ->
-            currentProcess.lifecycle.add(TaskCard.Running)
+            val currentBurst = getCurrentBurst(currentProcess)
+            if (currentBurst < currentProcess.burst) {
+                currentProcess.lifecycle.add(TaskCard.Running)
+                currentProcess.state = TaskCard.Running
+            }
+
+            // Update lifecycle for all processes
             processTable.forEach { process ->
-                if (process.arriveTime <= currentTime && !process.completed) {
-                    if (process.id == currentProcess.id && process.responseTime == 0) {
-                        process.responseTime = currentTime - process.arriveTime
-                    }
-
-                    if (process.id == currentProcess.id && getCurrentBurst(process) == currentProcess.burst - 1) {
-                        currentProcess.completed = true
-                        process.completed = true
-                        process.returnTime = currentTime + 1 - process.arriveTime
-                        process.lifecycle.add(TaskCard.Finished)
-                    }
-
-                    if (process.id != currentProcess.id) {
-                        process.lifecycle.add(TaskCard.Blocked)
-                        process.waitingTime++
-                    }
+                if (process != currentProcess && process.arriveTime <= currentTime && !process.completed) {
+                    process.lifecycle.add(TaskCard.Blocked)
+                    process.waitingTime++
+                    process.state = TaskCard.Blocked
                 }
+            }
+
+            // Check if the current process is completed
+            if (currentBurst + 1 >= currentProcess.burst) {
+                currentProcess.completed = true
+                currentProcess.returnTime = currentTime + 1 - currentProcess.arriveTime
+                currentProcess.lifecycle.add(TaskCard.Finished)
+                currentProcess.state = TaskCard.Finished
+                selected = null // Reset selected process if it completes
             }
         }
 
-        if (selected?.completed == true) {
-            selected = null
-        }
-
+        // Increment the current time
         currentTime++
+
     }
+
 
     private fun getCurrentBurst(process: TaskCard): Int {
         return process.lifecycle.count { it == TaskCard.Running }
@@ -95,14 +100,5 @@ class Scheduler(private val processQueue: ProcessQueue) {
     fun getProcessTable(): List<TaskCard> {
         return _processTable.toList() // Returning a read-only view of the list
     }
-
-    object Modality {
-        const val PREEMPTIVE = 1
-        const val NON_PREEMPTIVE = 2
-    }
-
-    object Algorithm {
-        const val SJF = 1
-        const val PRIORITIES = 2
-    }
+    
 }

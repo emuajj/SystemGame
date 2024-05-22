@@ -3,6 +3,7 @@ package com.joanjaume.myapplication.models.interfaces.cardInterface
 enum class CardType {
     TASK,
     CPU,
+    ALGORITHM,
     GENERIC
 }
 
@@ -31,12 +32,18 @@ interface ICpuCard : ICardGeneric {
     val clockSpeed: Int
 }
 
+interface IAlgorithmCard : ICardGeneric {
+    val modality: Int
+    val algorithm: Int
+
+}
+
 data class TaskCard(
     override val id: Int?,
     override val name: String,
     override val type: CardType = CardType.TASK,
     override val description: String?,
-    val arriveTime: Int,
+    var arriveTime: Int,
     override var burst: Int,
     override var priority: Int,
     override var lifecycle: MutableList<Int> = mutableListOf(),
@@ -56,25 +63,65 @@ data class TaskCard(
         const val Finished = 4
     }
 
-    data class CpuCard(
-        override val id: Int?,
-        override val name: String,
-        override val type: CardType = CardType.CPU,
-        override val description: String,
-        override val clockSpeed: Int,
-    ) : ICpuCard {
-        private var currentTask: TaskCard? = null  // Track the current task
 
-        fun isAvailable(): Boolean {
-            return currentTask == null  // CPU is available if there's no current task
+}
+
+data class CpuCard(
+    override val id: Int?,
+    override val name: String,
+    override val type: CardType = CardType.CPU,
+    override val description: String,
+    override val clockSpeed: Int,
+) : ICpuCard {
+    private var currentTask: TaskCard? = null  // Track the current task
+
+    fun isAvailable(): Boolean {
+        return currentTask == null  // CPU is available if there's no current task
+    }
+
+    fun assignTask(task: TaskCard) {
+        currentTask = task  // Assign a new task to this CPU
+    }
+
+    fun releaseTask() {
+        currentTask = null  // Release the current task
+    }
+}
+
+data class AlgorithmCard(
+    override val id: Int?,
+    override val name: String,
+    override val description: String?,
+    override val type: CardType = CardType.ALGORITHM,
+    override val modality: Int,
+    override val algorithm: Int
+) : IAlgorithmCard {
+
+}
+
+
+object Modality {
+    operator fun get(modality: Int): String {
+        return when (modality) {
+            PREEMPTIVE -> "Preemptive"
+            NON_PREEMPTIVE -> "Non-preemptive"
+            else -> "Unknown modality"
         }
+    }
 
-        fun assignTask(task: TaskCard) {
-            currentTask = task  // Assign a new task to this CPU
-        }
+    const val PREEMPTIVE = 1
+    const val NON_PREEMPTIVE = 2
+}
 
-        fun releaseTask() {
-            currentTask = null  // Release the current task
+object Algorithm {
+    const val SJF = 1
+    const val PRIORITIES = 2
+
+    operator fun get(algorithm: Int): String {
+        return when (algorithm) {
+            SJF -> "Shortest Job First"
+            PRIORITIES -> "Priority Scheduling"
+            else -> "Unknown Algorithm"
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.joanjaume.myapplication.models.gameModels
 
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
-import com.joanjaume.myapplication.models.interfaces.cardInterface.ICardGeneric
-import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
+import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.repository.CardProvider
 
 class Model {
@@ -11,19 +9,32 @@ class Model {
 
     fun initModel() {
         countdownData.addCardsToDeck(cardProvider.getInitialTaskCards())
+        countdownData.setCpuCard(cardProvider.getCpuCard())
+        countdownData.setAlgorithmCard(cardProvider.getAlgorithmCard())
     }
 
     fun handleClickCard(card: ICardGeneric) {
         if (card.type == CardType.TASK) {
-//            countdownData.addCardToDeck(card as TaskCard)
             // DO THING
             countdownData.addUserProcess(card as TaskCard)
+            countdownData.removeCardFromDeck(card)
+        } else {
+            countdownData.handleGenericClick(card)
+            countdownData.removeCardFromDeck(card)
         }
     }
 
 
     fun getDeck(): List<ICardGeneric> {
         return countdownData.getDeckCards()
+    }
+
+    fun getCpuCard(): CpuCard? {
+        return countdownData.getCpuCard()
+    }
+
+    fun getAlgorithmCard(): AlgorithmCard? {
+        return countdownData.getAlgorithmCard()
     }
 
     fun getProcessTable(): List<TaskCard> {

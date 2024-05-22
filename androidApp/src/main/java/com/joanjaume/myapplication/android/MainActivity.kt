@@ -14,12 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.joanjaume.myapplication.android.components.card.AlgorithmCard.AlgorithmCardComposable
 import com.joanjaume.myapplication.android.components.card.CardComposable
+import com.joanjaume.myapplication.android.components.card.CpuCard.CpuCardComposable
 import com.joanjaume.myapplication.android.components.ganttTable.GanttChartComponent
 import com.joanjaume.myapplication.android.`view-models`.ViewModel
 import com.joanjaume.myapplication.models.gameModels.Model
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
-import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
+import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,26 +33,55 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel = remember { ViewModel(Model()) }
                     val state by viewModel.modelUiState.collectAsState()
-                    val cpuCardEmpty = TaskCard.CpuCard(
+                    val cpuCardEmpty = CpuCard(
                         null,
                         "--",
                         CardType.CPU,
                         "--",
                         1
                     )
+                    val algorithmCardEmpty = AlgorithmCard(
+                        null,
+                        "--",
+                        null,
+                        CardType.ALGORITHM,
+                        1,
+                        1
+                    )
 
                     Column(modifier = Modifier.fillMaxSize()) {
                         Row() {
-                            state.cpuCard?.let { cpuCard ->
-                                CardComposable(
-                                    card = cpuCard,
-                                    handleClickCard = { viewModel.handleClickCard(cpuCard) }
-                                )
-                            } ?: run {
-                                CardComposable(
-                                    card = cpuCardEmpty,
-                                    handleClickCard = { viewModel.handleClickCard(cpuCardEmpty) }
-                                )
+                            Column() {
+                                state.cpuCard?.let { cpuCard: CpuCard ->
+//                                CardComposable(
+//                                    card = cpuCard,
+//                                    handleClickCard = { viewModel.handleClickCard(cpuCard) }
+//                                )
+                                    CpuCardComposable(
+                                        card = cpuCard,
+                                        handleClickCard = { viewModel.handleClickCard(cpuCard) }
+                                    )
+                                } ?: run {
+                                    CpuCardComposable(
+                                        card = cpuCardEmpty,
+                                        handleClickCard = { viewModel.handleClickCard(cpuCardEmpty) }
+                                    )
+                                }
+                                state.algorithmCard?.let { algorithmCard: AlgorithmCard ->
+//                                CardComposable(
+//                                    card = cpuCard,
+//                                    handleClickCard = { viewModel.handleClickCard(cpuCard) }
+//                                )
+                                    AlgorithmCardComposable(
+                                        card = algorithmCard,
+                                        handleClickCard = { viewModel.handleClickCard(algorithmCard) }
+                                    )
+                                } ?: run {
+                                    AlgorithmCardComposable(
+                                        card = algorithmCardEmpty,
+                                        handleClickCard = { viewModel.handleClickCard(algorithmCardEmpty) }
+                                    )
+                                }
                             }
                             Box(
                                 contentAlignment = Alignment.Center // Aligns children in the center of the Box
@@ -84,7 +114,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f), // Adjust the weight as needed to balance with the LazyRow
-                            maxTime = 24 // Assume 24 as max time, adjust as necessaryy
+                            maxTime = 100 // Assume 24 as max time, adjust as necessaryy
                         )
                         // Ensure LazyRow is always visible at the bottom
                         LazyRow(

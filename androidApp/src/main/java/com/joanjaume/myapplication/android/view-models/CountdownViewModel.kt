@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 data class CountDownUiState(
     var deck: List<ICardGeneric> = emptyList(),
     var ganttTasks: Map<Int, TaskCard> = emptyMap(),
-    var cpuCard: TaskCard.CpuCard? = null,
+    var cpuCard: CpuCard? = null,
     var countdownSeconds: Int = 1000,
     var timeCount: Long = 0,
 )
