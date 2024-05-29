@@ -2,35 +2,71 @@ package com.joanjaume.myapplication.repository
 
 
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
+import kotlin.math.max
 
 class CardProvider {
 
-    fun getInitialTaskCards(): List<ICardGeneric> {
-        return predefinedTaskCards
+    fun getRandomCards(numberOfCards: Int): List<ICardGeneric> {
+        var adjustedNumberOfCards = max(3, numberOfCards);
+
+        val randomCards = mutableListOf<ICardGeneric>()
+
+        // Ensure that there are enough cards to fulfill the requirements
+        if (adjustedNumberOfCards < 3 || cpuTable.isEmpty() || algorithmTable.isEmpty() || taskTable.isEmpty()) {
+            throw IllegalArgumentException("Not enough cards to fulfill the requirements.")
+        }
+
+        // Add one random CpuCard
+        randomCards += cpuTable.random()
+
+        // Add one random AlgorithmCard
+        randomCards += algorithmTable.random()
+
+        // Fill the rest of the list with TaskCards
+        val remainingCards = adjustedNumberOfCards - 2
+        val shuffledTaskCards = taskTable.shuffled()
+        if (shuffledTaskCards.size < remainingCards) {
+            throw IllegalArgumentException("Not enough task cards to fulfill the requirements.")
+        }
+
+        randomCards += shuffledTaskCards.take(remainingCards)
+
+        return randomCards
     }
 
     fun getCpuCard(): CpuCard {
-        return predefinedCpuCard
+        var randomElement = cpuTable.random()
+        return randomElement
     }
 
     fun getAlgorithmCard(): AlgorithmCard {
-        return predefinedAlgorithmCard
+        return algorithmTable.random()
     }
+
+    fun getAllTaskCards(): List<TaskCard> {
+        return taskTable
+    }
+
 
 }
 
 
-private val predefinedTaskCards: List<ICardGeneric> = listOf(
+//mockup
+private val taskTable: List<TaskCard> = listOf(
     TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 10),
     TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1),
     TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 1),
-    CpuCard(null, "SubaDubaSLOW", CardType.CPU, "SubaDubaSLOW", 1),
-    AlgorithmCard(null, "AlgorithmFAST", "", CardType.ALGORITHM, 2, 2)
-    // Add more predefined cards as needed
 )
 
-private val predefinedCpuCard: CpuCard =
-    CpuCard(null, "SubaDubaFAST", CardType.CPU, "SubaDubaFAST", 3)
+private val cpuTable: List<CpuCard> = listOf(
+    CpuCard(null, "SubaDubaFAST", CardType.CPU, "SubaDubaFAST", 3),
+    CpuCard(null, "SubaDubaSLOW", CardType.CPU, "SubaDubaSLOW", 1),
 
-private val predefinedAlgorithmCard: AlgorithmCard =
-    AlgorithmCard(null, "AlgorithmSLOW", "", CardType.ALGORITHM, 1, 1)
+
+    )
+
+private val algorithmTable: List<AlgorithmCard> = listOf(
+    AlgorithmCard(null, "AlgorithmSLOW", "", CardType.ALGORITHM, 1, 1),
+    AlgorithmCard(null, "AlgorithmFAST", "", CardType.ALGORITHM, 2, 2)
+
+)

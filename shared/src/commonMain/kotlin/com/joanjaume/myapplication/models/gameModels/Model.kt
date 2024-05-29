@@ -8,7 +8,7 @@ class Model() {
     var cardProvider = CardProvider()
 
     fun initModel() {
-        countdownData.addCardsToDeck(cardProvider.getInitialTaskCards())
+//        countdownData.addCardsToDeck(cardProvider.getInitialTaskCards())
         countdownData.setCpuCard(cardProvider.getCpuCard())
         countdownData.setAlgorithmCard(cardProvider.getAlgorithmCard())
     }
