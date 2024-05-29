@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-data class ModelUiState(
+data class SimulationModelUiState(
     var deck: List<ICardGeneric> = emptyList(),
     var ganttTasks: List<TaskCard> = emptyList(),
     var cpuCard: CpuCard? = null,
@@ -21,7 +21,7 @@ data class ModelUiState(
     var timeCount: Int = 0,
 )
 
-class ViewModel(private val model: Model) : ViewModel() {
+class SimulationViewModel(private val model: Model) : ViewModel() {
 
     private val _modelUiState = MutableStateFlow(ModelUiState())
     val modelUiState: StateFlow<ModelUiState> = _modelUiState

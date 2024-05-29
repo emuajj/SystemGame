@@ -3,7 +3,7 @@ package com.joanjaume.myapplication.models.gameModels
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.repository.CardProvider
 
-class Model {
+class Model() {
     var countdownData = CountdownData()
     var cardProvider = CardProvider()
 
