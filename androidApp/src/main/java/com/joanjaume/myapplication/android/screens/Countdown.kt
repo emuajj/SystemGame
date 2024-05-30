@@ -20,7 +20,7 @@ import com.joanjaume.myapplication.android.components.card.AlgorithmCard.Algorit
 import com.joanjaume.myapplication.android.components.card.CardComposable
 import com.joanjaume.myapplication.android.components.card.CpuCard.CpuCardComposable
 import com.joanjaume.myapplication.android.components.ganttTable.GanttChartComponent
-import com.joanjaume.myapplication.android.`view-models`.ViewModel
+import com.joanjaume.myapplication.android.ViewModels.ViewModel
 import com.joanjaume.myapplication.models.gameModels.Model
 import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType

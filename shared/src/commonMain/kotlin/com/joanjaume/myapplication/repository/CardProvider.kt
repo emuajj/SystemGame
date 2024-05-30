@@ -47,6 +47,14 @@ class CardProvider {
         return taskTable
     }
 
+    fun getAllAlgorithmCards(): List<AlgorithmCard> {
+        return algorithmTable
+    }
+
+    fun getAllCpuCards(): List<CpuCard> {
+        return cpuTable
+    }
+
 
 }
 
@@ -55,8 +63,16 @@ class CardProvider {
 private val taskTable: List<TaskCard> = listOf(
     TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 10),
     TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1),
-    TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 1),
-)
+    TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 12),
+    TaskCard(null, "4--TASKCARD", CardType.TASK, "Description for Card 4", 0, 3, 16),
+    TaskCard(null, "5--TASKCARD", CardType.TASK, "Description for Card 5", 0, 3, 4),
+    TaskCard(null, "6--TASKCARD", CardType.TASK, "Description for Card 6", 0, 3, 25),
+    TaskCard(null, "7--TASKCARD", CardType.TASK, "Description for Card 7", 0, 3, 6),
+    TaskCard(null, "8--TASKCARD", CardType.TASK, "Description for Card 8", 0, 3, 3),
+    TaskCard(null, "9--TASKCARD", CardType.TASK, "Description for Card 9", 0, 3, 1),
+    TaskCard(null, "10--TASKCARD", CardType.TASK, "Description for Card 10", 0, 3, 12),
+
+    )
 
 private val cpuTable: List<CpuCard> = listOf(
     CpuCard(null, "SubaDubaFAST", CardType.CPU, "SubaDubaFAST", 3),

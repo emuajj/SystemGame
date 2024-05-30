@@ -63,7 +63,7 @@ fun CardComposable(card: ICardGeneric, handleClickCard: (ICardGeneric) -> Unit) 
                 ) {
                     if (card is TaskCard) {
                         Text(
-                            text = "CPU CYCLES :" + card.burst,
+                            text = "BURST :" + card.burst,
                             style = MaterialTheme.typography.body2,
                             color = MaterialTheme.colors.onSurface
                         )
