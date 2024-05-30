@@ -34,6 +34,10 @@ fun SimulationComposable() {
     val stepperValue = viewModel.stepperStep.observeAsState(1)
     var showStepper by remember { mutableStateOf(true) }
 
+    fun handleStartSimulation() {
+        showStepper = false
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
@@ -42,7 +46,7 @@ fun SimulationComposable() {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if(showStepper) {
+            if (showStepper) {
                 Box(
                     contentAlignment = Alignment.TopCenter
                 ) {
@@ -65,16 +69,17 @@ fun SimulationComposable() {
                         1 -> StepOne(viewModel)
                         2 -> StepTwo(viewModel)
                         3 -> StepThree(viewModel)
-                        4 -> StepFour(viewModel, handleStartSimulation())
+                        4 -> StepFour(viewModel) { handleStartSimulation() }
                     }
                 }
-            }else{
-//                SimulationGame(cpuCard = (), algorithmCard = ())
+            } else {
+                if (viewModel.selectedAlgorithmCard.value != null && viewModel.selectedCpuCard.value != null && viewModel.selectedTaskCards.value?.isNotEmpty() == true)
+                    SimulationGame(
+                        tasksList = (viewModel.selectedTaskCards.value!!),
+                        cpuCard = (viewModel.selectedCpuCard.value!!),
+                        algorithmCard = (viewModel.selectedAlgorithmCard.value!!)
+                    )
             }
         }
     }
-}
-
-fun handleStartSimulation() {
-
 }

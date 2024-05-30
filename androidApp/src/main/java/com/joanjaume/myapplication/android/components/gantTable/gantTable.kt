@@ -10,11 +10,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
@@ -28,6 +30,16 @@ fun GanttChartComponent(
     shape: Shape,
     maxTime: Int
 ) {
+    val unitWidth = 64.dp
+    val scrollState = rememberScrollState()
+
+    val density = LocalDensity.current
+    val centeredIteration = maxOf(1, iteration - 2)
+    val scrollPositionPx = with(density) { (centeredIteration * unitWidth.toPx()).toInt() }
+
+    LaunchedEffect(iteration) {
+        scrollState.animateScrollTo(scrollPositionPx)
+    }
 
     Surface(
         modifier = modifier
@@ -37,7 +49,6 @@ fun GanttChartComponent(
         elevation = 4.dp,
         shape = shape
     ) {
-        val scrollState = rememberScrollState()
 
         Column {
             // Header row with fixed name column and scrollable time units

@@ -34,7 +34,7 @@ fun StepThree(viewModel: SimulationViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .border(1.dp, Color(0xFF006400), RoundedCornerShape(8.dp))
+            .border(1.dp, Color.Red , RoundedCornerShape(8.dp))
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -22,7 +22,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
 
 @Composable
-fun StepFour(viewModel: SimulationViewModel, handleStartSimulation: Unit) {
+fun StepFour(viewModel: SimulationViewModel, handleStartSimulation: () -> Unit) {
     var isStartSimulationButtonActivated by remember { mutableStateOf(false) }
     val tasksSelected = viewModel.selectedTaskCards.observeAsState(emptyList())
     val selectedAlgorithmCard =
@@ -45,56 +45,41 @@ fun StepFour(viewModel: SimulationViewModel, handleStartSimulation: Unit) {
     ) {
         Text(
             text = "Tasks(${tasksSelected.value.size}) for the simulation:",
-            style = TextStyle(
-                fontSize = 20.sp, // Change the font size to 20 sp
-                fontWeight = FontWeight.Bold // Optional: make the text bold
-            ),
-            modifier = Modifier.padding(8.dp) // Adds padding around the text
+            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier.padding(8.dp)
         )
-        if (tasksSelected.value?.isNotEmpty() == true) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()  // Ensures the LazyColumn fills the horizontal space
-                    .heightIn(min = 100.dp, max = 300.dp) // Restricts the height, change values as needed
-                    .wrapContentHeight() // Adjusts height based on content
-            ) {
-                items(tasksSelected.value!!) { card ->
-                    Row(
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f) // Adjusting weight based on content
+                .padding(bottom = 8.dp)
+        ) {
+            items(tasksSelected.value!!) { card ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(2.dp)
+                        .border(1.dp, Color.Blue, RoundedCornerShape(8.dp))
+                        .padding(10.dp)
+                ) {
+                    Text(
+                        text = card.name,
                         modifier = Modifier
-                            .fillMaxWidth()  // Ensures the Row fills the horizontal space
-                            .padding(2.dp)  // Adds padding around each Row for better spacing
-                            .border(1.dp, Color.Blue, RoundedCornerShape(8.dp))
-                            .padding(10.dp)
-                    ) {
-                        Text(
-                            text = card.name,
-                            modifier = Modifier
-                                .weight(1f)  // Allocates a fraction of the Row's space to this Text
-                                .padding(end = 8.dp)  // Adds padding to the end of the Text
-                        )
-                        Text(
-                            text = "Burst: ${card.burst}",
-                            modifier = Modifier
-                                .weight(1f)  // Ensures this Text also takes a significant portion of the space
-                        )
-                        Text(
-                            text = "Priority: ${card.priority}",
-                            modifier = Modifier
-                                .weight(1f)  // Ensures this Text also takes a significant portion of the space
-                        )
-                    }
+                            .weight(1f)
+                            .padding(end = 8.dp)
+                    )
+                    Text(
+                        text = "Burst: ${card.burst}",
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = "Priority: ${card.priority}",
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
-        } else {
-            Text(
-                text = "NO SELECTED CARDS YET",
-                style = TextStyle(
-                    fontSize = 20.sp, // Change the font size to 20 sp
-                    fontWeight = FontWeight.Light // Optional: make the text bold
-                ),
-                modifier = Modifier.padding(8.dp) // Adds padding around the text
-            )
         }
+
         Text(
             text = "Algorithm for the simulation:",
             style = TextStyle(
@@ -141,7 +126,14 @@ fun StepFour(viewModel: SimulationViewModel, handleStartSimulation: Unit) {
                 modifier = Modifier.padding(8.dp) // Adds padding around the text
             )
         }
-        Button(onClick = { handleStartSimulation }, enabled = isStartSimulationButtonActivated) {
+
+        Button(
+            onClick = { handleStartSimulation() },
+            enabled = isStartSimulationButtonActivated,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ) {
             Text(text = "Start Simulation")
         }
     }
