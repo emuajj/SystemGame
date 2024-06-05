@@ -11,12 +11,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joanjaume.myapplication.android.components.Stepper.Stepper
-import com.joanjaume.myapplication.android.components.Stepper.Steps.SimulationSteps.StepOne
-import com.joanjaume.myapplication.android.components.Stepper.Steps.SimulationSteps.StepThree
-import com.joanjaume.myapplication.android.components.Stepper.Steps.SimulationSteps.StepTwo
+import com.joanjaume.myapplication.android.components.ui.Stepper.Stepper
+import com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps.StepOne
+import com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps.StepThree
+import com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps.StepTwo
 import com.joanjaume.myapplication.android.ViewModels.SimulationViewModel
-import com.joanjaume.myapplication.android.components.Stepper.Steps.SimulationSteps.StepFour
+import com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps.StepFour
 import com.joanjaume.myapplication.android.screens.Simulation.SimulationGame
 
 class SimulationActivity : ComponentActivity() {

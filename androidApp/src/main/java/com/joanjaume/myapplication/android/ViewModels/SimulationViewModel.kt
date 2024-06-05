@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.joanjaume.myapplication.models.cards.cpuCard.cpu
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.repository.CardProvider
+import com.joanjaume.myapplication.repository.TypesProvider
 
 class SimulationViewModel() : ViewModel() {
     // LiveData Initialization with default values
@@ -32,6 +33,8 @@ class SimulationViewModel() : ViewModel() {
 
     private val cardProvider = CardProvider()
 
+    private val typeProvider = TypesProvider()
+
     fun initializeStepOne() {
         _taskCards.value = cardProvider.getAllTaskCards()
     }
@@ -40,7 +43,7 @@ class SimulationViewModel() : ViewModel() {
         _algorithmCards.value = cardProvider.getAllAlgorithmCards()
     }
 
-    fun initializeStepThree(){
+    fun initializeStepThree() {
         _cpuCards.value = cardProvider.getAllCpuCards()
     }
 
@@ -61,5 +64,30 @@ class SimulationViewModel() : ViewModel() {
 
     fun onStepperValueChange(newVal: Int) {
         _stepperStep.value = newVal
+    }
+
+    fun getAlgorithmOptions(): Map<String, Int> {
+        return typeProvider.getCardAlgorithms()
+    }
+
+    fun getModalityOptions(): Map<String, Int> {
+        return typeProvider.getCardModalities()
+    }
+
+
+    fun saveNewCard(card: ICardGeneric) {
+        when (card.type) {
+            CardType.TASK -> {
+                cardProvider.handleAddTaskCard(card as TaskCard)
+                initializeStepOne()
+            }
+            CardType.ALGORITHM -> {
+                cardProvider.handleAddAlgorithmCard(card as AlgorithmCard)
+                initializeStepTwo()
+            }
+            CardType.CPU -> {
+            }
+            else -> {}
+        }
     }
 }

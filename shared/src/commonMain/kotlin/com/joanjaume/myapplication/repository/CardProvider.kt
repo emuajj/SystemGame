@@ -55,12 +55,24 @@ class CardProvider {
         return cpuTable
     }
 
+    fun handleAddAlgorithmCard(card: AlgorithmCard) {
+        algorithmTable = listOf(card) + algorithmTable
+    }
+
+    fun handleAddTaskCard(card: TaskCard) {
+        taskTable = listOf(card) + taskTable
+    }
+
+    fun handleAddCpuCard(card: CpuCard) {
+        cpuTable = listOf(card) + cpuTable
+    }
+
 
 }
 
 
 //mockup
-private val taskTable: List<TaskCard> = listOf(
+private var taskTable: List<TaskCard> = listOf(
     TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 10),
     TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1),
     TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 12),
@@ -74,14 +86,14 @@ private val taskTable: List<TaskCard> = listOf(
 
     )
 
-private val cpuTable: List<CpuCard> = listOf(
+private var cpuTable: List<CpuCard> = listOf(
     CpuCard(null, "SubaDubaFAST", CardType.CPU, "SubaDubaFAST", 3),
     CpuCard(null, "SubaDubaSLOW", CardType.CPU, "SubaDubaSLOW", 1),
 
 
     )
 
-private val algorithmTable: List<AlgorithmCard> = listOf(
+private var algorithmTable: List<AlgorithmCard> = listOf(
     AlgorithmCard(null, "AlgorithmSLOW", "", CardType.ALGORITHM, 1, 1),
     AlgorithmCard(null, "AlgorithmFAST", "", CardType.ALGORITHM, 2, 2)
 

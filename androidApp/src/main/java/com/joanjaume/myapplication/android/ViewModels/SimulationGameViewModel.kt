@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 class SimulationGameViewModel(
-    taskcards: List<TaskCard>,
+    taskCards: List<TaskCard>,
     private val cpuCard: CpuCard,  // Now stored as a property
     private val algorithmCard: AlgorithmCard  // Now stored as a property
 ) : ViewModel() {
@@ -33,7 +33,7 @@ class SimulationGameViewModel(
 
 
     init {
-        for (taskcard in taskcards) {
+        for (taskcard in taskCards) {
             val newProcess = taskcard.copy(id = processIdCounter++)
             newProcess.arriveTime = scheduler.currentTime
             newProcess.state = TaskCard.New

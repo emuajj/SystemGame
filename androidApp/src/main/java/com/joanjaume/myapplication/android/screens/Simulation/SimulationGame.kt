@@ -32,7 +32,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 
 @Composable
 fun SimulationGame(tasksList: List<TaskCard>, cpuCard: CpuCard, algorithmCard: AlgorithmCard) {
-    val viewModel = SimulationGameViewModel(taskcards = tasksList, cpuCard, algorithmCard)
+    val viewModel = SimulationGameViewModel(taskCards = tasksList, cpuCard, algorithmCard)
 
     val timeCount = viewModel.timeCount.observeAsState(0)
     val ganttTasks = viewModel.ganttTasks.observeAsState(emptyList())
@@ -80,7 +80,7 @@ fun SimulationGame(tasksList: List<TaskCard>, cpuCard: CpuCard, algorithmCard: A
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f), // Adjust the weight as needed to balance with the LazyRow
-                        maxTime = 100 // Assume 24 as max time, adjust as necessaryy
+                        maxTime = 100 // Assume 100 as max time, adjust as necessaryy
                     )
 
                 }

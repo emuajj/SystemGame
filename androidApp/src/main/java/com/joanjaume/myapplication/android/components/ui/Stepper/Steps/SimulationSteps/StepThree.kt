@@ -1,4 +1,4 @@
-package com.joanjaume.myapplication.android.components.Stepper.Steps.SimulationSteps
+package com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*

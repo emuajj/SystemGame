@@ -1,4 +1,4 @@
-package com.joanjaume.myapplication.android.components.Stepper
+package com.joanjaume.myapplication.android.components.ui.Stepper
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
