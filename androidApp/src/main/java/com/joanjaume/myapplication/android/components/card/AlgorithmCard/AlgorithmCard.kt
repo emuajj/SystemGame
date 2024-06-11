@@ -14,7 +14,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 
 @Composable
 fun AlgorithmCardComposable(card: AlgorithmCard, handleClickCard: (ICardGeneric) -> Unit) {
-
+    println("cardJJJJJ $card")
     Card(
         modifier = Modifier
             .padding(6.dp)
@@ -40,10 +40,17 @@ fun AlgorithmCardComposable(card: AlgorithmCard, handleClickCard: (ICardGeneric)
                 text = "Algorithm : ${Algorithm[card.algorithm]}",
                 style = MaterialTheme.typography.body2,
             )
-            Text(
-                text = "Modality : ${Modality[card.modality]}",
-                style = MaterialTheme.typography.body2,
-            )
+            if (card.algorithm == 3) {
+                Text(
+                    text = "Quantum : ${card.quantum}",
+                    style = MaterialTheme.typography.body2,
+                )
+            } else {
+                Text(
+                    text = "Modality : ${Modality[card.modality]}",
+                    style = MaterialTheme.typography.body2,
+                )
+            }
 
         }
     }

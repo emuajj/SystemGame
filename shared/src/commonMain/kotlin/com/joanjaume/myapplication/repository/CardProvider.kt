@@ -73,8 +73,8 @@ class CardProvider {
 
 //mockup
 private var taskTable: List<TaskCard> = listOf(
-    TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 10),
-    TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1),
+    TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 10, true, 3),
+    TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1, true, 2),
     TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 12),
     TaskCard(null, "4--TASKCARD", CardType.TASK, "Description for Card 4", 0, 3, 16),
     TaskCard(null, "5--TASKCARD", CardType.TASK, "Description for Card 5", 0, 3, 4),

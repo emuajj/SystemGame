@@ -77,7 +77,7 @@ fun StepOne(viewModel: SimulationViewModel) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()  // Ensures the LazyColumn fills the horizontal space
-                    .heightIn(max = 300.dp)
+                    .heightIn(max = 210.dp)
             ) {
                 items(tasksSelected.value!!) { card ->
                     Row(
@@ -100,6 +100,11 @@ fun StepOne(viewModel: SimulationViewModel) {
                         )
                         Text(
                             text = "Priority: ${card.priority}",
+                            modifier = Modifier
+                                .weight(1f)  // Ensures this Text also takes a significant portion of the space
+                        )
+                        Text(
+                            text = "In/Out: ${card.ioDuration}",
                             modifier = Modifier
                                 .weight(1f)  // Ensures this Text also takes a significant portion of the space
                         )

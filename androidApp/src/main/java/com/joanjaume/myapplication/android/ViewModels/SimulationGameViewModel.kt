@@ -53,14 +53,36 @@ class SimulationGameViewModel(
         }
     }
 
+    //    fun runNextSchedulerStep() {
+//        scheduler.runNextStep(
+//            algorithm = algorithmCard.algorithm,
+//            modality = algorithmCard.modality,
+//            quantum = 1
+//        )
+//        _timeCount.value = scheduler.currentTime
+//        _ganttTasks.value = scheduler.getProcessTable()
+//        if (processQueue.size() == 0) {
+//            isActiveGantt = false
+//        }
+//    }
     fun runNextSchedulerStep() {
+        // Handle I/O for tasks
+        scheduler.getProcessTable().forEach { task ->
+            if (task.ioRequired && task.ioDuration > 0) {
+                scheduler.requestIO(task)
+            } else if (task.state == TaskCard.WaitingForIO && task.ioDuration <= 0) {
+                scheduler.completeIO(task)
+            }
+        }
+
         scheduler.runNextStep(
             algorithm = algorithmCard.algorithm,
-            modality = algorithmCard.modality
+            modality = algorithmCard.modality,
+            quantum = algorithmCard.quantum ?: 0
         )
         _timeCount.value = scheduler.currentTime
         _ganttTasks.value = scheduler.getProcessTable()
-        if (processQueue.size() == 0) {
+        if (processQueue.size() == 0 && scheduler.getProcessTable().none { it.ioRequired }) {
             isActiveGantt = false
         }
     }

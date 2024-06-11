@@ -1,15 +1,17 @@
 package com.joanjaume.myapplication.repository
 
-import com.joanjaume.myapplication.models.interfaces.cardInterface.*
-
 class TypesProvider {
 
     fun getCardModalities(): Map<String, Int> {
         return modalityTypes
     }
 
-    fun getCardAlgorithms(): Map<String, Int>{
+    fun getCardAlgorithms(): Map<String, Int> {
         return alogirhtmTypes
+    }
+
+    fun getAlgorithmByName(name: String): Int {
+        return alogirhtmTypes[name] ?: 0
     }
 
 
@@ -17,8 +19,10 @@ class TypesProvider {
 
 
 val alogirhtmTypes = mapOf(
-    "SJF" to 1,
-    "PRIORITIES" to 2
+    "Shortest Job First" to 1,
+    "Priorities" to 2,
+    "Round Robin" to 3,
+    "Highest Response Ratio Next" to 4
 )
 
 val modalityTypes = mapOf(

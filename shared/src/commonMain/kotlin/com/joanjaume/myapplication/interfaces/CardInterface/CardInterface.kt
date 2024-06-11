@@ -35,6 +35,7 @@ interface ICpuCard : ICardGeneric {
 interface IAlgorithmCard : ICardGeneric {
     val modality: Int
     val algorithm: Int
+    val quantum: Int?
 
 }
 
@@ -46,6 +47,8 @@ data class TaskCard(
     var arriveTime: Int,
     override var burst: Int,
     override var priority: Int,
+    var ioRequired: Boolean = false,  // Indicates if the task needs I/O
+    var ioDuration: Int = 0,  // Duration of I/O operation
     override var lifecycle: MutableList<Int> = mutableListOf(),
     override var waitingTime: Int = 0,
     override var returnTime: Int = 0,
@@ -53,14 +56,17 @@ data class TaskCard(
     override var completed: Boolean = false,
     override var startTime: Int? = null,
     override var endTime: Int? = null,
-    override var state: Int = LifecycleState.New
-) : ITaskCard {
+    override var state: Int = New,
+
+    ) : ITaskCard {
     companion object LifecycleState {
         const val New = 0
         const val Blocked = 1
         const val Ready = 2
         const val Running = 3
         const val Finished = 4
+        const val WaitingForIO = 5  // New state for waiting for I/O
+        const val PerformingIO = 6  // New state for performing I/O
     }
 
 
@@ -94,7 +100,8 @@ data class AlgorithmCard(
     override val description: String?,
     override val type: CardType = CardType.ALGORITHM,
     override val modality: Int,
-    override val algorithm: Int
+    override val algorithm: Int,
+    override val quantum: Int? = null
 ) : IAlgorithmCard {
 
 }
@@ -116,11 +123,15 @@ object Modality {
 object Algorithm {
     const val SJF = 1
     const val PRIORITIES = 2
+    const val ROUND_ROBIN = 3
+    const val HRRN = 4
 
     operator fun get(algorithm: Int): String {
         return when (algorithm) {
             SJF -> "Shortest Job First"
             PRIORITIES -> "Priority Scheduling"
+            ROUND_ROBIN -> "Round Robin"
+            HRRN -> "Highest Response Ratio Next"
             else -> "Unknown Algorithm"
         }
     }

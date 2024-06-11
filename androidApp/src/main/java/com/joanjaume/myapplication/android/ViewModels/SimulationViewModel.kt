@@ -74,6 +74,10 @@ class SimulationViewModel() : ViewModel() {
         return typeProvider.getCardModalities()
     }
 
+    fun getAlgorithmByName(name: String): Int {
+        return typeProvider.getAlgorithmByName(name)
+    }
+
 
     fun saveNewCard(card: ICardGeneric) {
         when (card.type) {

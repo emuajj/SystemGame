@@ -28,7 +28,7 @@ class CountdownData {
     }
 
     fun runNextSchedulerStep(algorithm: Int, modality: Int) {
-        scheduler.runNextStep(algorithm, modality)
+        scheduler.runNextStep(algorithm, modality,1)
     }
 
     fun getGanttChart(): String {

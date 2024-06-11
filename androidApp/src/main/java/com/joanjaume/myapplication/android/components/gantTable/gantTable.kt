@@ -93,7 +93,7 @@ fun GanttChartComponent(
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Box(modifier = Modifier.width(60.dp)) {
                             Text(
-                                text = task.name + task.id,
+                                text = task.name + "( p : ${task.priority})" ,
                                 modifier = Modifier.padding(4.dp), // Match width with the header
                                 style = MaterialTheme.typography.body2
                             )

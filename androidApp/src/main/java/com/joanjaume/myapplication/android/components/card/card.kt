@@ -63,7 +63,7 @@ fun CardComposable(card: ICardGeneric, handleClickCard: (ICardGeneric) -> Unit) 
                 ) {
                     if (card is TaskCard) {
                         Text(
-                            text = "BURST :" + card.burst,
+                            text = "BURST :" + card.burst + "  In/Out :" + card.ioDuration,
                             style = MaterialTheme.typography.body2,
                             color = MaterialTheme.colors.onSurface
                         )
@@ -73,11 +73,17 @@ fun CardComposable(card: ICardGeneric, handleClickCard: (ICardGeneric) -> Unit) 
                             color = MaterialTheme.colors.onSurface
                         )
                     } else if (card is AlgorithmCard) {
-                        Text(
-                            text = "Modality : " + Modality[card.modality],
-                            style = MaterialTheme.typography.body2,
-                            color = MaterialTheme.colors.onSurface
-                        )
+                        if (card.algorithm == 3) {
+                            Text(
+                                text = "Quantum : ${card.quantum}",
+                                style = MaterialTheme.typography.body2,
+                            )
+                        } else {
+                            Text(
+                                text = "Modality : ${Modality[card.modality]}",
+                                style = MaterialTheme.typography.body2,
+                            )
+                        }
                         Text(
                             text = "Algorithm : " + Algorithm[card.algorithm],
                             style = MaterialTheme.typography.body2,
