@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.joanjaume.myapplication.android.Activities.SimulationActivity
 import com.joanjaume.myapplication.android.screens.CountdownScreen
-import com.joanjaume.myapplication.android.components.card.Layout.MenuScreen
+import com.joanjaume.myapplication.android.components.ui.Layout.MenuScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

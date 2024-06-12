@@ -14,7 +14,6 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 
 @Composable
 fun AlgorithmCardComposable(card: AlgorithmCard, handleClickCard: (ICardGeneric) -> Unit) {
-    println("cardJJJJJ $card")
     Card(
         modifier = Modifier
             .padding(6.dp)

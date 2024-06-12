@@ -1,4 +1,4 @@
-package com.joanjaume.myapplication.android.components.card.Layout
+package com.joanjaume.myapplication.android.components.ui.Layout
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button

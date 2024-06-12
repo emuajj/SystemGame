@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
+import com.joanjaume.myapplication.models.interfaces.gantInterface.Results
 import com.joanjaume.myapplication.models.scheduler.Scheduler
 import com.joanjaume.myapplication.models.scheduler.process.ProcessQueue
 import kotlinx.coroutines.delay
@@ -23,6 +24,12 @@ class SimulationGameViewModel(
     private val _ganttTasks = MutableLiveData<List<TaskCard>>()
     val ganttTasks: LiveData<List<TaskCard>> = _ganttTasks
 
+    private val _results = MutableLiveData<Results>()
+    val results: LiveData<Results> = _results
+
+    private val _isResultsModalOpen = MutableLiveData(false)
+    val isResultsModalOpen: LiveData<Boolean> = _isResultsModalOpen
+
     private val _timeCount = MutableLiveData<Int>()
     val timeCount: LiveData<Int> = _timeCount
 
@@ -30,6 +37,7 @@ class SimulationGameViewModel(
     private val scheduler = Scheduler(processQueue)
     private var processIdCounter = 0
     private var isActiveGantt = true
+    private var delayTime = 1000L
 
 
     init {
@@ -43,17 +51,29 @@ class SimulationGameViewModel(
 
     }
 
+    fun toggleResultsModal(shouldShow: Boolean) {
+        _isResultsModalOpen.value = shouldShow
+    }
+
+    fun changeTime(action: String) {
+        when (action) {
+            "acc" -> delayTime /= 2
+            "dec" -> delayTime *= 2
+            else -> throw IllegalArgumentException("Invalid action: $action")
+        }
+    }
+
 
     fun startScheduler() {
         viewModelScope.launch {
             while (isActiveGantt) {  // isActive checks if the coroutine is still active
                 runNextSchedulerStep()
-                delay(1000L)
+                delay(delayTime)
             }
         }
     }
 
-    fun runNextSchedulerStep() {
+    private fun runNextSchedulerStep() {
         scheduler.runNextStep(
             algorithm = algorithmCard.algorithm,
             modality = algorithmCard.modality,
@@ -63,29 +83,10 @@ class SimulationGameViewModel(
         _ganttTasks.value = scheduler.getProcessTable()
         if (processQueue.size() == 0) {
             isActiveGantt = false
+            _results.value = scheduler.getMetrics()
+            _isResultsModalOpen.value = true
         }
     }
-//    fun runNextSchedulerStep() {
-//        // Handle I/O for tasks
-//        scheduler.getProcessTable().forEach { task ->
-//            if (task.ioRequired && task.ioDuration > 0) {
-//                scheduler.requestIO(task)
-//            } else if (task.state == TaskCard.WaitingForIO && task.ioDuration <= 0) {
-//                scheduler.completeIO(task)
-//            }
-//        }
-//
-//        scheduler.runNextStep(
-//            algorithm = algorithmCard.algorithm,
-//            modality = algorithmCard.modality,
-//            quantum = algorithmCard.quantum ?: 0
-//        )
-//        _timeCount.value = scheduler.currentTime
-//        _ganttTasks.value = scheduler.getProcessTable()
-//        if (processQueue.size() == 0 && scheduler.getProcessTable().none { it.ioRequired }) {
-//            isActiveGantt = false
-//        }
-//    }
 
     override fun onCleared() {
         super.onCleared()

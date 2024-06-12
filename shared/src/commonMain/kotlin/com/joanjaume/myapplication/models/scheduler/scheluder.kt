@@ -3,6 +3,7 @@ package com.joanjaume.myapplication.models.scheduler
 import com.joanjaume.myapplication.models.interfaces.cardInterface.Algorithm
 import com.joanjaume.myapplication.models.interfaces.cardInterface.Modality
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
+import com.joanjaume.myapplication.models.interfaces.gantInterface.Results
 import com.joanjaume.myapplication.models.scheduler.process.ProcessQueue
 import kotlin.jvm.JvmName
 
@@ -320,6 +321,10 @@ class Scheduler(private val processQueue: ProcessQueue) {
     }
 
     private fun runCurrentProcess(currentProcess: TaskCard) {
+        if (currentProcess.responseTime == null) {
+            currentProcess.responseTime = currentTime - currentProcess.arriveTime
+        }
+
         val currentBurst = getCurrentBurst(currentProcess)
         if (currentBurst < currentProcess.burst) {
             currentProcess.lifecycle.add(TaskCard.Running)
@@ -345,6 +350,13 @@ class Scheduler(private val processQueue: ProcessQueue) {
             selected = null // Reset selected process if it completes
             timeSliceRemaining = 0
         }
+
+        // Update waiting time for all other processes
+        processTable.forEach { process ->
+            if (process != currentProcess && process.arriveTime <= currentTime && !process.completed) {
+                process.waitingTime++
+            }
+        }
     }
 
     private fun getCurrentBurst(process: TaskCard): Int {
@@ -354,116 +366,21 @@ class Scheduler(private val processQueue: ProcessQueue) {
     fun getProcessTable(): List<TaskCard> {
         return _processTable.toList() // Returning a read-only view of the list
     }
+
+    fun getMetrics(): Results {
+        val completedProcesses = processTable.filter { it.completed }
+        val averageWaitingTime = completedProcesses.map { it.waitingTime }.average()
+        val averageResponseTime = completedProcesses.mapNotNull { it.responseTime }.average()
+        val averageReturnTime = completedProcesses.mapNotNull { it.returnTime }.average()
+        return Results(
+            completedProcesses,
+            averageWaitingTime,
+            averageResponseTime,
+            averageReturnTime
+        )
+    }
 }
 
-//
-//class Scheduler(private val processQueue: ProcessQueue) {
-//    private val processTable = mutableListOf<TaskCard>()
-//    var currentTime: Int = 0
-//    var selected: TaskCard? = null
-//    private var timeSliceRemaining: Int = 0
-//
-//    private val _processTable: List<TaskCard>
-//        @JvmName("getProcessTableProperty") get() = processTable.toList()
-//
-//    fun addProcess(process: TaskCard) {
-//        process.lifecycle = MutableList(currentTime + 1) { TaskCard.New }
-//        processTable.add(process)
-//        processQueue.enqueue(process)
-//        process.state = TaskCard.New
-//    }
-//
-//    fun updateGantt(): String {
-//        val ganttChart = StringBuilder()
-//        processTable.forEach { process ->
-//            val lifecycleRepresentation = process.lifecycle.joinToString("") {
-//                when (it) {
-//                    TaskCard.New -> "N"
-//                    TaskCard.Ready -> "R"
-//                    TaskCard.Running -> ">"
-//                    TaskCard.Blocked -> "B"
-//                    TaskCard.Finished -> "F"
-//                    TaskCard.WaitingForIO -> "W"
-//                    TaskCard.PerformingIO -> "I"
-//                    else -> "?"
-//                }
-//            }
-//            ganttChart.append("|${process.name} $lifecycleRepresentation|\n")
-//        }
-//        return ganttChart.toString()
-//    }
-//
-//    fun runNextStep(algorithm: Int, modality: Int, quantum: Int) {
-//        // Handle I/O operations
-//        processTable.filter { it.state == TaskCard.WaitingForIO }
-//            .forEach { process -> requestIO(process) }
-//
-//        processTable.filter { it.state == TaskCard.PerformingIO }
-//            .forEach { process ->
-//                if (process.lifecycle.count { it == TaskCard.PerformingIO } >= 2) {
-//                    completeIO(process)
-//                    process.state = TaskCard.Ready
-//                    processQueue.enqueue(process)
-//                }
-//            }
-//
-//        // Other scheduling logic
-//        selected?.let { runCurrentProcess(it) }
-//        currentTime++
-//    }
-//
-//    fun requestIO(task: TaskCard) {
-//        if (task.ioRequired && !task.completed) {
-//            task.state = TaskCard.WaitingForIO
-//        }
-//    }
-//
-//    fun completeIO(task: TaskCard) {
-//        if (task.state == TaskCard.WaitingForIO) {
-//            task.state = TaskCard.Ready
-//            task.ioDuration -= 1
-//            if (task.ioDuration == 0) {
-//                task.ioRequired = false
-//            }
-//        }
-//    }
-//
-//    private fun runCurrentProcess(currentProcess: TaskCard) {
-//        val currentBurst = getCurrentBurst(currentProcess)
-//        if (currentBurst < currentProcess.burst) {
-//            currentProcess.lifecycle.add(TaskCard.Running)
-//            currentProcess.state = TaskCard.Running
-//            timeSliceRemaining--
-//        }
-//
-//        // Update lifecycle for all other processes
-//        processTable.forEach { process ->
-//            if (process != currentProcess && process.arriveTime <= currentTime && !process.completed) {
-//                process.lifecycle.add(TaskCard.Blocked)
-//                process.waitingTime++
-//                process.state = TaskCard.Blocked
-//            }
-//        }
-//
-//        // Check if the current process is completed
-//        if (currentBurst + 1 >= currentProcess.burst) {
-//            currentProcess.completed = true
-//            currentProcess.returnTime = currentTime + 1 - currentProcess.arriveTime
-//            currentProcess.lifecycle.add(TaskCard.Finished)
-//            currentProcess.state = TaskCard.Finished
-//            selected = null // Reset selected process if it completes
-//            timeSliceRemaining = 0
-//        }
-//    }
-//
-//    private fun getCurrentBurst(process: TaskCard): Int {
-//        return process.lifecycle.count { it == TaskCard.Running }
-//    }
-//
-//    fun getProcessTable(): List<TaskCard> {
-//        return _processTable.toList() // Returning a read-only view of the list
-//    }
-//}
 
 
 
