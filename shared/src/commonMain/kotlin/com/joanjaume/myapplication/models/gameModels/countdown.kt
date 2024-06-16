@@ -28,11 +28,12 @@ class CountdownData {
     }
 
     fun runNextSchedulerStep(algorithm: Int, modality: Int) {
-        scheduler.runNextStep(algorithm, modality,1)
+        scheduler.runNextStep(algorithm, modality, 1)
     }
 
     fun getGanttChart(): String {
-        return scheduler.updateGantt()
+        return ""
+        //        return scheduler.updateGantt()
     }
 
     // Deck management methods
@@ -55,7 +56,8 @@ class CountdownData {
     }
 
     fun getProcessTable(): List<TaskCard> {
-        return scheduler.getProcessTable();
+//        return scheduler.getProcessTable();
+        return emptyList()
     }
 
     fun getCurrentTime(): Int {

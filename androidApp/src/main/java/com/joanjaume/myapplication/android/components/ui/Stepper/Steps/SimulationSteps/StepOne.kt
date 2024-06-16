@@ -103,11 +103,6 @@ fun StepOne(viewModel: SimulationViewModel) {
                             modifier = Modifier
                                 .weight(1f)  // Ensures this Text also takes a significant portion of the space
                         )
-                        Text(
-                            text = "In/Out: ${card.ioDuration}",
-                            modifier = Modifier
-                                .weight(1f)  // Ensures this Text also takes a significant portion of the space
-                        )
                     }
                 }
             }

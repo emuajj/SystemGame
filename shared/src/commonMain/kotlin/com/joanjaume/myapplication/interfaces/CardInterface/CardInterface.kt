@@ -16,12 +16,12 @@ interface ICardGeneric {
 }
 
 interface ITaskCard : ICardGeneric {
-    val burst: Int
+    val burst: MutableList<String>
     var priority: Int
     var lifecycle: MutableList<Int>
     var waitingTime: Int
     var returnTime: Int
-    var responseTime: Int
+    var responseTime: Int?
     var completed: Boolean
     var startTime: Int?
     var endTime: Int?
@@ -45,32 +45,28 @@ data class TaskCard(
     override val type: CardType = CardType.TASK,
     override val description: String?,
     var arriveTime: Int,
-    override var burst: Int,
+    override var burst: MutableList<String> = mutableListOf(),
     override var priority: Int,
-    var ioRequired: Boolean = false,  // Indicates if the task needs I/O
-    var ioDuration: Int = 0,  // Duration of I/O operation
-    override var lifecycle: MutableList<Int> = mutableListOf(),
+    override var lifecycle: MutableList<Int> = mutableListOf(), // Changed to store state changes as strings
+    var currentBurst: Int = 0,
     override var waitingTime: Int = 0,
     override var returnTime: Int = 0,
-    override var responseTime: Int = 0,
+    override var responseTime: Int? = null,
     override var completed: Boolean = false,
     override var startTime: Int? = null,
     override var endTime: Int? = null,
     override var state: Int = New,
-
-    ) : ITaskCard {
+) : ITaskCard {
     companion object LifecycleState {
         const val New = 0
         const val Blocked = 1
         const val Ready = 2
         const val Running = 3
         const val Finished = 4
-        const val WaitingForIO = 5  // New state for waiting for I/O
-        const val PerformingIO = 6  // New state for performing I/O
+        const val PerformingIO = 5  // State for performing I/O
     }
-
-
 }
+
 
 data class CpuCard(
     override val id: Int?,

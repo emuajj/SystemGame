@@ -93,7 +93,7 @@ fun GanttChartComponent(
                     Row(modifier = Modifier.fillMaxWidth()) {
                         Box(modifier = Modifier.width(60.dp)) {
                             Text(
-                                text = task.name + "( p : ${task.priority})" ,
+                                text = task.name + "( p : ${task.priority})",
                                 modifier = Modifier.padding(4.dp), // Match width with the header
                                 style = MaterialTheme.typography.body2
                             )
@@ -108,6 +108,7 @@ fun GanttChartComponent(
                                             2 -> "RED"
                                             3 -> "RUN"
                                             4 -> "FIN"
+                                            5 -> "I/O"
                                             else -> ""
                                         }
                                     } else {

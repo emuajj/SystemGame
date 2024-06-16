@@ -73,18 +73,38 @@ class CardProvider {
 
 //mockup
 private var taskTable: List<TaskCard> = listOf(
-    TaskCard(null, "1--TASKCARD", CardType.TASK, "Description for Card 1", 0, 1, 10, true, 3),
-    TaskCard(null, "2--TASKCARD", CardType.TASK, "Description for Card 2", 0, 2, 1, true, 2),
-    TaskCard(null, "3--TASKCARD", CardType.TASK, "Description for Card 3", 0, 3, 12),
-    TaskCard(null, "4--TASKCARD", CardType.TASK, "Description for Card 4", 0, 3, 16),
-    TaskCard(null, "5--TASKCARD", CardType.TASK, "Description for Card 5", 0, 3, 4),
-    TaskCard(null, "6--TASKCARD", CardType.TASK, "Description for Card 6", 0, 3, 25),
-    TaskCard(null, "7--TASKCARD", CardType.TASK, "Description for Card 7", 0, 3, 6),
-    TaskCard(null, "8--TASKCARD", CardType.TASK, "Description for Card 8", 0, 3, 3),
-    TaskCard(null, "9--TASKCARD", CardType.TASK, "Description for Card 9", 0, 3, 1),
-    TaskCard(null, "10--TASKCARD", CardType.TASK, "Description for Card 10", 0, 3, 12),
+    TaskCard(id = null, name = "1--TASKCARD", type = CardType.TASK, description = "Description for Card 1", arriveTime = 0,
+        burst = mutableListOf("cpu", "io", "cpu"), priority = 10, lifecycle = mutableListOf()),
 
-    )
+    TaskCard(id = null, name = "2--TASKCARD", type = CardType.TASK, description = "Description for Card 2", arriveTime = 0,
+        burst = mutableListOf("cpu", "io" , "cpu" , "io" ), priority = 1, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "3--TASKCARD", type = CardType.TASK, description = "Description for Card 3", arriveTime = 0,
+        burst = mutableListOf("cpu" , "io" , "cpu" ), priority = 12, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "4--TASKCARD", type = CardType.TASK, description = "Description for Card 4", arriveTime = 0,
+        burst = mutableListOf("io" , "cpu" , "io" , "cpu" ), priority = 16, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "5--TASKCARD", type = CardType.TASK, description = "Description for Card 5", arriveTime = 0,
+        burst = mutableListOf("cpu" , "io" ), priority = 4, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "6--TASKCARD", type = CardType.TASK, description = "Description for Card 6", arriveTime = 0,
+        burst = mutableListOf("cpu" , "io" , "cpu" , "io" ), priority = 25, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "7--TASKCARD", type = CardType.TASK, description = "Description for Card 7", arriveTime = 0,
+        burst = mutableListOf("cpu" , "io" , "cpu" ), priority = 6, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "8--TASKCARD", type = CardType.TASK, description = "Description for Card 8", arriveTime = 0,
+        burst = mutableListOf("cpu" , "io" ), priority = 3, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "9--TASKCARD", type = CardType.TASK, description = "Description for Card 9", arriveTime = 0,
+        burst = mutableListOf("io" , "cpu" , "io" , "cpu" ), priority = 1, lifecycle = mutableListOf()),
+
+    TaskCard(id = null, name = "10--TASKCARD", type = CardType.TASK, description = "Description for Card 10", arriveTime = 0,
+        burst = mutableListOf("cpu" , "io" , "cpu" ), priority = 12, lifecycle = mutableListOf())
+)
+
+
 
 private var cpuTable: List<CpuCard> = listOf(
     CpuCard(null, "SubaDubaFAST", CardType.CPU, "SubaDubaFAST", 3),

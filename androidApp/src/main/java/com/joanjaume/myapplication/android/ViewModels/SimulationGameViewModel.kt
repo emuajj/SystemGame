@@ -81,6 +81,7 @@ class SimulationGameViewModel(
         )
         _timeCount.value = scheduler.currentTime
         _ganttTasks.value = scheduler.getProcessTable()
+        println("SCHEDULER : ${scheduler.getProcessTable()}")
         if (processQueue.size() == 0) {
             isActiveGantt = false
             _results.value = scheduler.getMetrics()
