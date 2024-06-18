@@ -77,7 +77,7 @@ fun StepOne(viewModel: SimulationViewModel) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()  // Ensures the LazyColumn fills the horizontal space
-                    .heightIn(max = 210.dp)
+                    .heightIn(max = 130.dp)
             ) {
                 items(tasksSelected.value!!) { card ->
                     Row(

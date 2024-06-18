@@ -27,6 +27,10 @@ class ProcessQueue {
         return queue.toList()
     }
 
+    fun remove(element: TaskCard?): Boolean {
+        return queue.remove(element)
+    }
+
     fun setList(processes: List<TaskCard>) {
         queue.clear()
         queue.addAll(processes)

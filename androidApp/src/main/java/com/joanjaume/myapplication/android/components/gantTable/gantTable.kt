@@ -106,7 +106,7 @@ fun GanttChartComponent(
                                             0 -> "NEW"
                                             1 -> "BLK"
                                             2 -> "RED"
-                                            3 -> "RUN"
+                                            3 -> "CPU"
                                             4 -> "FIN"
                                             5 -> "I/O"
                                             else -> ""
@@ -123,7 +123,9 @@ fun GanttChartComponent(
                                                     0 -> Color.Yellow
                                                     1 -> Color.Red
                                                     2 -> Color.Blue
-                                                    3 -> Color(0xFF006400) // Dark Green
+                                                    3 -> Color(0xFF00A000) // Dark Green
+                                                    4 -> Color(0xFF505050)
+                                                    5 -> Color(0xFFFFB000)
                                                     else -> Color.Transparent
                                                 }
                                             } else {
