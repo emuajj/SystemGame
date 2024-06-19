@@ -1,6 +1,7 @@
 package com.joanjaume.myapplication.models.scheduler
 
 import com.joanjaume.myapplication.models.interfaces.cardInterface.Algorithm
+import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.Modality
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 import com.joanjaume.myapplication.models.interfaces.gantInterface.Results
@@ -11,8 +12,8 @@ import kotlin.jvm.JvmName
 class Scheduler(private val processQueue: ProcessQueue) {
     private val processTable = mutableListOf<TaskCard>()
     var currentTime: Int = 0
-    var selected: TaskCard? = null
-    private var timeSliceRemaining: Int = 0
+    private var selected: MutableList<TaskCard?> = mutableListOf()
+    private var timeSliceRemaining: MutableList<Int> = mutableListOf()
 
     private val _processTable: List<TaskCard>
         @JvmName("getProcessTableProperty") get() = processTable.toList()
@@ -32,8 +33,10 @@ class Scheduler(private val processQueue: ProcessQueue) {
         return ganttChart.toString()
     }
 
-    fun runNextStep(algorithm: Int, modality: Int, quantum: Int) {
-        // Enqueue arriving processes
+    fun runNextStep(algorithm: Int, modality: Int, quantum: Int, cpuCard: CpuCard) {
+        // Adjust the scheduler to handle the number of tasks according to the CPU clock speed
+        adjustForCpuCard(cpuCard)
+
         processTable.forEach { process ->
             if (process.arriveTime == currentTime && process.state == TaskCard.Ready) {
                 process.lifecycle.add(TaskCard.Blocked)
@@ -41,61 +44,67 @@ class Scheduler(private val processQueue: ProcessQueue) {
             }
         }
 
-        when (algorithm) {
-            Algorithm.PRIORITIES -> {
-                handlePriorities()
+        for (index in selected.indices) {
+            when (algorithm) {
+                Algorithm.PRIORITIES -> {
+                    handlePriorities(index)
+                }
+                Algorithm.ROUND_ROBIN -> {
+                    handleRoundRobin(index, quantum)
+                }
+                Algorithm.SJF -> {
+                    handleSJF(index)
+                }
+                Algorithm.HRRN -> {
+                    handleHRRN(index)
+                }
             }
-            Algorithm.ROUND_ROBIN -> {
-                handleRoundRobin(quantum)
-            }
-            Algorithm.SJF -> {
-                handleSJF()
-            }
-            Algorithm.HRRN -> {
-                handleHRRN()
-            }
-        }
 
-        if (modality == Modality.PREEMPTIVE) {
-            handlePreemption(algorithm)
-        }
+            if (modality == Modality.PREEMPTIVE) {
+                handlePreemption(index, algorithm)
+            }
 
-        selected?.let { runCurrentProcess(it) }
+            selected[index]?.let { runCurrentProcess(it, index) }
+        }
 
         currentTime++
     }
 
-    private fun handleSJF() {
-        if (selected == null) {
+    private fun adjustForCpuCard(cpuCard: CpuCard) {
+        selected = MutableList(cpuCard.clockSpeed) { null }
+        timeSliceRemaining = MutableList(cpuCard.clockSpeed) { 0 }
+    }
+
+    private fun handleSJF(cpuIndex: Int) {
+        if (selected[cpuIndex] == null) {
             val shortestJob = processQueue.getList().filter { !it.completed }
                 .minByOrNull { it.burst.size }
-            selected = shortestJob
+            selected[cpuIndex] = shortestJob
         }
     }
 
-    private fun handlePriorities() {
-        if (selected == null) {
+    private fun handlePriorities(cpuIndex: Int) {
+        if (selected[cpuIndex] == null) {
             val highestPriorityJob = processQueue.getList().filter { !it.completed }
                 .minByOrNull { it.priority }
-            selected = highestPriorityJob
+            selected[cpuIndex] = highestPriorityJob
         }
     }
 
-
-    private fun handleRoundRobin(quantum: Int) {
-        if (selected == null || timeSliceRemaining == 0) {
-            selected?.let {
+    private fun handleRoundRobin(cpuIndex: Int, quantum: Int) {
+        if (selected[cpuIndex] == null || timeSliceRemaining[cpuIndex] == 0) {
+            selected[cpuIndex]?.let {
                 if (!it.completed) {
                     it.lifecycle.add(TaskCard.Blocked)
                     processQueue.enqueue(it)
                 }
             }
-            selected = processQueue.dequeue()
-            timeSliceRemaining = quantum
+            selected[cpuIndex] = processQueue.dequeue()
+            timeSliceRemaining[cpuIndex] = quantum
         }
     }
 
-    private fun handlePreemption(algorithm: Int) {
+    private fun handlePreemption(cpuIndex: Int, algorithm: Int) {
         val moreUrgentProcess = processTable.filter {
             it.arriveTime <= currentTime && !it.completed && it.state == TaskCard.Ready
         }.minByOrNull { process ->
@@ -106,44 +115,30 @@ class Scheduler(private val processQueue: ProcessQueue) {
             }
         }
 
-        // Preempt if there's a more urgent process that should take over
-        if (moreUrgentProcess != null && (selected == null || moreUrgentProcess.hasHigherPriority(
-                selected!!,
+        if (moreUrgentProcess != null && (selected[cpuIndex] == null || moreUrgentProcess.hasHigherPriority(
+                selected[cpuIndex]!!,
                 algorithm
             ))
         ) {
-            selected?.let {
+            selected[cpuIndex]?.let {
                 if (!it.completed) {
                     it.lifecycle.add(TaskCard.Blocked)
                     processQueue.enqueue(it)
                 }
             }
-            selected = moreUrgentProcess
+            selected[cpuIndex] = moreUrgentProcess
         }
     }
 
-    private fun TaskCard.hasHigherPriority(other: TaskCard, algorithm: Int): Boolean {
-        return when (algorithm) {
-            Algorithm.PRIORITIES -> this.priority < other.priority
-            Algorithm.SJF -> this.burst.size < other.burst.size
-            else -> false // In case of ROUND_ROBIN and HRRN, priority comparisons may not be relevant
-        }
-    }
-
-    private fun handleHRRN() {
+    private fun handleHRRN(cpuIndex: Int) {
         val highestRatioProcess = processTable.filter {
             it.arriveTime <= currentTime && !it.completed && it.state == TaskCard.Ready
         }.maxByOrNull { calculateResponseRatio(it) }
 
-        selected = highestRatioProcess
+        selected[cpuIndex] = highestRatioProcess
     }
 
-    private fun calculateResponseRatio(process: TaskCard): Double {
-        val waitingTime = currentTime - process.arriveTime
-        return (waitingTime + process.burst.size).toDouble() / process.burst.size
-    }
-
-    private fun runCurrentProcess(currentProcess: TaskCard) {
+    private fun runCurrentProcess(currentProcess: TaskCard, cpuIndex: Int) {
         if (currentProcess.responseTime == null) {
             currentProcess.responseTime = currentTime - currentProcess.arriveTime
         }
@@ -152,7 +147,7 @@ class Scheduler(private val processQueue: ProcessQueue) {
         if (currentBurst < currentProcess.burst.size) {
             currentProcess.lifecycle.add(if (currentProcess.burst[currentBurst] == "cpu") TaskCard.Running else TaskCard.PerformingIO)
             currentProcess.state = TaskCard.Running
-            timeSliceRemaining--
+            timeSliceRemaining[cpuIndex]--
         }
 
         // Update lifecycle for all other processes
@@ -170,8 +165,8 @@ class Scheduler(private val processQueue: ProcessQueue) {
             currentProcess.returnTime = currentTime + 1 - currentProcess.arriveTime
             currentProcess.lifecycle.add(TaskCard.Finished)
             currentProcess.state = TaskCard.Finished
-            selected = null // Reset selected process if it completes
-            timeSliceRemaining = 0
+            selected[cpuIndex] = null // Reset selected process if it completes
+            timeSliceRemaining[cpuIndex] = 0
         }
 
         // Update waiting time for all other processes
@@ -180,6 +175,19 @@ class Scheduler(private val processQueue: ProcessQueue) {
                 process.waitingTime++
             }
         }
+    }
+
+    private fun TaskCard.hasHigherPriority(other: TaskCard, algorithm: Int): Boolean {
+        return when (algorithm) {
+            Algorithm.PRIORITIES -> this.priority < other.priority
+            Algorithm.SJF -> this.burst.size < other.burst.size
+            else -> false // In case of ROUND_ROBIN and HRRN, priority comparisons may not be relevant
+        }
+    }
+
+    private fun calculateResponseRatio(process: TaskCard): Double {
+        val waitingTime = currentTime - process.arriveTime
+        return (waitingTime + process.burst.size).toDouble() / process.burst.size
     }
 
     private fun getCurrentBurst(process: TaskCard): Int {
@@ -203,6 +211,8 @@ class Scheduler(private val processQueue: ProcessQueue) {
         )
     }
 }
+
+
 
 
 

@@ -16,7 +16,7 @@ class Model() {
     fun handleClickCard(card: ICardGeneric) {
         if (card.type == CardType.TASK) {
             // DO THING
-            countdownData.addUserProcess(card as TaskCard)
+//            countdownData.addUserProcess(card as TaskCard)
             countdownData.removeCardFromDeck(card)
         } else {
             countdownData.handleGenericClick(card)

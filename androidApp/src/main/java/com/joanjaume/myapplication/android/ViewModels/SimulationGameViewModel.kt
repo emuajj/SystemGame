@@ -77,15 +77,22 @@ class SimulationGameViewModel(
         scheduler.runNextStep(
             algorithm = algorithmCard.algorithm,
             modality = algorithmCard.modality,
-            quantum = 1
+            quantum = 1,
+            cpuCard = cpuCard
         )
         _timeCount.value = scheduler.currentTime
         _ganttTasks.value = scheduler.getProcessTable()
-        if (processQueue.size() == 0) {
+        if (areProccesFinished()) {
             isActiveGantt = false
             _results.value = scheduler.getMetrics()
             _isResultsModalOpen.value = true
         }
+    }
+
+    private fun areProccesFinished(): Boolean {
+        val processTable = scheduler.getProcessTable()
+
+        return processTable.all { it.state == 4 }
     }
 
     override fun onCleared() {

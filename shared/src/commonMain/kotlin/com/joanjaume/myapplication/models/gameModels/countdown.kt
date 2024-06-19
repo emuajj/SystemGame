@@ -16,20 +16,20 @@ class CountdownData {
     private var processIdCounter = 0
 
 
-    fun addUserProcess(card: TaskCard) {
-        val newProcess = card.copy(id = processIdCounter++)
-        newProcess.arriveTime = getCurrentTime()
-        newProcess.state = TaskCard.New // Ensure the state is set to Ready before adding
-        scheduler.addProcess(newProcess)
-        // Run the next step with a specified algorithm and modality
-        for (i in 0 until cpuCard!!.clockSpeed) {
-            runNextSchedulerStep(algorithmCard!!.algorithm, algorithmCard!!.modality)
-        }
-    }
+//    fun addUserProcess(card: TaskCard) {
+//        val newProcess = card.copy(id = processIdCounter++)
+//        newProcess.arriveTime = getCurrentTime()
+//        newProcess.state = TaskCard.New // Ensure the state is set to Ready before adding
+//        scheduler.addProcess(newProcess)
+//        // Run the next step with a specified algorithm and modality
+//        for (i in 0 until cpuCard!!.clockSpeed) {
+//            runNextSchedulerStep(algorithmCard!!.algorithm, algorithmCard!!.modality)
+//        }
+//    }
 
-    fun runNextSchedulerStep(algorithm: Int, modality: Int) {
-        scheduler.runNextStep(algorithm, modality, 1)
-    }
+//    fun runNextSchedulerStep(algorithm: Int, modality: Int) {
+//        scheduler.runNextStep(algorithm, modality, 1,cpuCard ?? CpuCard())
+//    }
 
     fun getGanttChart(): String {
         return ""
@@ -64,11 +64,11 @@ class CountdownData {
         return scheduler.currentTime
     }
 
-    fun iterateTime() {
-        for (i in 0 until cpuCard!!.clockSpeed) {
-            runNextSchedulerStep(algorithmCard!!.algorithm, algorithmCard!!.modality)
-        }
-    }
+//    fun iterateTime() {
+//        for (i in 0 until cpuCard!!.clockSpeed) {
+//            runNextSchedulerStep(algorithmCard!!.algorithm, algorithmCard!!.modality)
+//        }
+//    }
 
     fun setCpuCard(incomincCpu: CpuCard) {
         cpuCard = incomincCpu

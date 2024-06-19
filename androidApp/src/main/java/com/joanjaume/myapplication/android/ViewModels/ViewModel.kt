@@ -56,7 +56,7 @@ class ViewModel(private val model: Model) : ViewModel() {
 
 
     fun iterateTime() {
-        model.countdownData.iterateTime()
+//        model.countdownData.iterateTime()
         updateProcessQueue()
         updateCurrentTime()
     }

@@ -75,19 +75,6 @@ data class CpuCard(
     override val description: String,
     override val clockSpeed: Int,
 ) : ICpuCard {
-    private var currentTask: TaskCard? = null  // Track the current task
-
-    fun isAvailable(): Boolean {
-        return currentTask == null  // CPU is available if there's no current task
-    }
-
-    fun assignTask(task: TaskCard) {
-        currentTask = task  // Assign a new task to this CPU
-    }
-
-    fun releaseTask() {
-        currentTask = null  // Release the current task
-    }
 }
 
 data class AlgorithmCard(
