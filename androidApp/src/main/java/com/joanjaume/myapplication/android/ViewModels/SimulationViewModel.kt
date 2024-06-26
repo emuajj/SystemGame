@@ -3,6 +3,7 @@ package com.joanjaume.myapplication.android.ViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.joanjaume.myapplication.android.Repository.CardProviders
 import com.joanjaume.myapplication.models.cards.cpuCard.cpu
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.repository.CardProvider
@@ -33,10 +34,15 @@ class SimulationViewModel() : ViewModel() {
 
     private val cardProvider = CardProvider()
 
+    private val cardProviders = CardProviders()
+
     private val typeProvider = TypesProvider()
 
     fun initializeStepOne() {
-        _taskCards.value = cardProvider.getAllTaskCards()
+//        _taskCards.value = cardProvider.getAllTaskCards()
+        cardProviders.getAllTaskCards { taskCards ->
+            _taskCards.value = taskCards
+        }
     }
 
     fun initializeStepTwo() {

@@ -11,6 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.firebase.FirebaseApp
 import com.joanjaume.myapplication.android.components.ui.Stepper.Stepper
 import com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps.StepOne
 import com.joanjaume.myapplication.android.components.ui.Stepper.Steps.SimulationSteps.StepThree

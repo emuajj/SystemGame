@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import com.joanjaume.myapplication.android.Activities.SimulationActivity
 import com.joanjaume.myapplication.android.screens.CountdownScreen
 import com.joanjaume.myapplication.android.components.ui.Layout.MenuScreen
@@ -18,6 +19,7 @@ import com.joanjaume.myapplication.android.components.ui.Layout.MenuScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContent {
             MyApp()
         }
