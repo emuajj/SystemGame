@@ -50,9 +50,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.2")
     implementation("androidx.compose.runtime:runtime-livedata:1.0.1")
 
-    // Firebase dependencies with the updated versions
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1")) // Verify if there's a newer compatible version
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-database-ktx:21.0.0") // Changed to include the KTX version for Kotlin extensions
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))// Use the latest version available
+
+    // Declare the dependencies without specifying versions
+    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation ("com.google.firebase:firebase-database-ktx")
+    implementation ("com.google.firebase:firebase-firestore-ktx")
 }
+

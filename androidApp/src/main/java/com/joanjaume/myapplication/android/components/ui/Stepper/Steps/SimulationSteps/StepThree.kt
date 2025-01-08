@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.joanjaume.myapplication.android.components.card.CardComposable
 import com.joanjaume.myapplication.android.ViewModels.SimulationViewModel
+import com.joanjaume.myapplication.android.components.CardCreator.CpuCardCreator
 import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
 
 @Composable
@@ -34,7 +35,7 @@ fun StepThree(viewModel: SimulationViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
-            .border(1.dp, Color.Red , RoundedCornerShape(8.dp))
+            .border(1.dp, Color.Red, RoundedCornerShape(8.dp))
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -89,5 +90,6 @@ fun StepThree(viewModel: SimulationViewModel) {
                 modifier = Modifier.padding(8.dp) // Adds padding around the text
             )
         }
+        CpuCardCreator(viewModel)
     }
 }

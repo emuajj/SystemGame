@@ -57,6 +57,24 @@ data class TaskCard(
     override var endTime: Int? = null,
     override var state: Int = New,
 ) : ITaskCard {
+    constructor() : this(
+        id = null,
+        name = "",
+        type = CardType.TASK,
+        description = null,
+        arriveTime = 0,
+        burst = mutableListOf(),
+        priority = 0,
+        lifecycle = mutableListOf(),
+        currentBurst = 0,
+        waitingTime = 0,
+        returnTime = 0,
+        responseTime = null,
+        completed = false,
+        startTime = null,
+        endTime = null,
+        state = New
+    )
     companion object LifecycleState {
         const val New = 0
         const val Blocked = 1
@@ -75,6 +93,13 @@ data class CpuCard(
     override val description: String,
     override val clockSpeed: Int,
 ) : ICpuCard {
+    constructor() : this(
+        id = null,
+        name = "",
+        type = CardType.CPU,
+        description = "",
+        clockSpeed = 0
+    )
 }
 
 data class AlgorithmCard(
@@ -86,6 +111,15 @@ data class AlgorithmCard(
     override val algorithm: Int,
     override val quantum: Int? = null
 ) : IAlgorithmCard {
+    constructor() : this(
+        id = null,
+        name = "",
+        description = null,
+        type = CardType.ALGORITHM,
+        modality = 0,
+        algorithm = 0,
+        quantum = null
+    )
 
 }
 

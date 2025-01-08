@@ -8,27 +8,19 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.joanjaume.myapplication.android.MyApplicationTheme
 import com.joanjaume.myapplication.android.ViewModels.SimulationGameViewModel
-import com.joanjaume.myapplication.android.ViewModels.SimulationViewModel
 import com.joanjaume.myapplication.android.components.card.AlgorithmCard.AlgorithmCardComposable
-import com.joanjaume.myapplication.android.components.card.CardComposable
 import com.joanjaume.myapplication.android.components.card.CpuCard.CpuCardComposable
 import com.joanjaume.myapplication.android.components.ganttTable.GanttChartComponent
-import com.joanjaume.myapplication.android.ViewModels.ViewModel
 import com.joanjaume.myapplication.android.components.ui.Results.ShowResultsModal
-import com.joanjaume.myapplication.models.gameModels.Model
 import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
-import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
-import com.joanjaume.myapplication.models.interfaces.gantInterface.Results
 
 @Composable
 fun SimulationGame(tasksList: List<TaskCard>, cpuCard: CpuCard, algorithmCard: AlgorithmCard) {

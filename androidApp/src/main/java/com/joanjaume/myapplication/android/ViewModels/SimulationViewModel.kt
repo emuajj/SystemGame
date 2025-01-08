@@ -39,18 +39,53 @@ class SimulationViewModel() : ViewModel() {
     private val typeProvider = TypesProvider()
 
     fun initializeStepOne() {
-//        _taskCards.value = cardProvider.getAllTaskCards()
-        cardProviders.getAllTaskCards { taskCards ->
-            _taskCards.value = taskCards
+        cardProviders.getAllTaskCards { taskCards, error ->
+            if (error != null) {
+                // Log the error or handle it as needed
+                println("Error retrieving task cards: ${error.message}")
+                // Optionally update a LiveData or state to reflect the erro
+            } else if (taskCards != null) {
+                // Update your LiveData with the retrieved cards
+                _taskCards.value = taskCards
+            } else
+            // Handle the case where taskCards is null and there's no error (unlikely but possible)
+                println("No task cards found and no error reported.")
+        }
+
+
+    }
+
+
+    fun initializeStepTwo() {
+//        _algorithmCards.value = cardProvider.getAllAlgorithmCards()
+        cardProviders.getAllAlgorithmCards() { algorithmCards, error ->
+            if (error != null) {
+                // Log the error or handle it as needed
+                println("Error retrieving task cards: ${error.message}")
+                // Optionally update a LiveData or state to reflect the erro
+            } else if (algorithmCards != null) {
+                // Update your LiveData with the retrieved cards
+                _algorithmCards.value = algorithmCards
+            } else
+            // Handle the case where taskCards is null and there's no error (unlikely but possible)
+                println("No task cards found and no error reported.")
         }
     }
 
-    fun initializeStepTwo() {
-        _algorithmCards.value = cardProvider.getAllAlgorithmCards()
-    }
-
     fun initializeStepThree() {
-        _cpuCards.value = cardProvider.getAllCpuCards()
+//        _cpuCards.value = cardProvider.getAllCpuCards()
+        cardProviders.getAllCpuCards() { cpuCards, error ->
+            if (error != null) {
+                // Log the error or handle it as needed
+                println("Error retrieving task cards: ${error.message}")
+                // Optionally update a LiveData or state to reflect the erro
+            } else if (cpuCards != null) {
+                // Update your LiveData with the retrieved cards
+                _cpuCards.value = cpuCards
+            } else
+            // Handle the case where taskCards is null and there's no error (unlikely but possible)
+                println("No task cards found and no error reported.")
+        }
     }
 
     fun handleClickCardStepper(card: ICardGeneric) {
@@ -88,14 +123,44 @@ class SimulationViewModel() : ViewModel() {
     fun saveNewCard(card: ICardGeneric) {
         when (card.type) {
             CardType.TASK -> {
-                cardProvider.handleAddTaskCard(card as TaskCard)
+                cardProviders.addTaskCard(card as TaskCard) { success, error ->
+                    if (success) {
+                        // Handle success (e.g., notify the user, update UI)
+                        println("TaskCard successfully added!")
+                    } else {
+                        // Log the error or handle it as needed
+                        println("Failed to add TaskCard: ${error?.message}")
+                        // Optionally update a LiveData or state to reflect the error
+                    }
+                }
                 initializeStepOne()
             }
             CardType.ALGORITHM -> {
-                cardProvider.handleAddAlgorithmCard(card as AlgorithmCard)
+//                cardProvider.handleAddAlgorithmCard(card as AlgorithmCard)
+                cardProviders.addAlgorithmCard(card as AlgorithmCard) { success, error ->
+                    if (success) {
+                        // Handle success (e.g., notify the user, update UI)
+                        println("TaskCard successfully added!")
+                    } else {
+                        // Log the error or handle it as needed
+                        println("Failed to add TaskCard: ${error?.message}")
+                        // Optionally update a LiveData or state to reflect the error
+                    }
+                }
                 initializeStepTwo()
             }
             CardType.CPU -> {
+                cardProviders.addCpuCard(card as CpuCard) { success, error ->
+                    if (success) {
+                        // Handle success (e.g., notify the user, update UI)
+                        println("TaskCard successfully added!")
+                    } else {
+                        // Log the error or handle it as needed
+                        println("Failed to add TaskCard: ${error?.message}")
+                        // Optionally update a LiveData or state to reflect the error
+                    }
+                }
+                initializeStepThree()
             }
             else -> {}
         }

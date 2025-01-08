@@ -1,81 +1,59 @@
 package com.joanjaume.myapplication.android.components.CardCreator
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.joanjaume.myapplication.android.ViewModels.SimulationViewModel
-import com.joanjaume.myapplication.android.components.ui.Selector.SelectorComposable
-import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
+import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
+
+
+//override val id: Int?,
+//override val name: String,
+//override val type: CardType = CardType.CPU,
+//override val description: String,
+//override val clockSpeed: Int,
 
 @Composable
 fun CpuCardCreator(viewModel: SimulationViewModel) {
-    // Fetch options from the ViewModel
-    var algorithmOptions by remember { mutableStateOf(emptyMap<String, Int>()) }
-    var modalityOptions by remember { mutableStateOf(emptyMap<String, Int>()) }
 
     // Remember the local selection state
-    var selectedAlgorithmOption by remember { mutableStateOf<Int?>(null) }
-    var selectedModalityOption by remember { mutableStateOf<Int?>(null) }
+    var selectedClockSpeed by remember { mutableStateOf(1) }
+    var cardName by remember { mutableStateOf("") }
 
-
-    // Use LaunchedEffect to fetch options once when the composable is first composed
-    LaunchedEffect(key1 = true) {
-        algorithmOptions = viewModel.getAlgorithmOptions()
-        modalityOptions = viewModel.getModalityOptions()
-    }
-
-    // Handle local selection changes
-    fun onChangeAlgorithm(name: String, value: Int) {
+    fun onChangeClokSpeed(name: String, value: Int) {
 //        selectedOption = name to value
         println("Local selection: $name with value $value")
-        selectedAlgorithmOption = value
+        selectedClockSpeed = value
     }
-
-    fun onChangeModality(name: String, value: Int) {
-//        selectedOption = name to value
-        println("Local selection: $name with value $value")
-        selectedModalityOption = value
-    }
-
-    // Conditionally display the SelectorComposable based on the availability of options
-    if (algorithmOptions.isNotEmpty() && modalityOptions.isNotEmpty()) {
-        SelectorComposable(
-            options = algorithmOptions,
-            label = "Select Algorithm",
-            onOptionSelected = ::onChangeAlgorithm
-        )
-        SelectorComposable(
-            options = modalityOptions,
-            label = "Select Algorithm",
-            onOptionSelected = ::onChangeModality
-        )
-    } else {
-        // Optionally display a placeholder or a loading indicator when options are empty
-        Text("Loading algorithms...", style = MaterialTheme.typography.body1)
-    }
-
+    TextField(
+        value = selectedClockSpeed.toString(),
+        onValueChange = { selectedClockSpeed = it.toInt() },
+        label = { Text("ClockSpeed") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
+    Spacer(modifier = Modifier.height(16.dp)) // Optional: add some space before the button
+    TextField(value = cardName, onValueChange = { cardName = it }, label = {Text(text = "Choose a name")})
     // Example button to save the selection to the ViewModel
     Button(
         onClick = {
-            // Ensure non-null values when constructing the card object
-            selectedModalityOption?.let { modality ->
-                selectedAlgorithmOption?.let { algorithm ->
-                    viewModel.saveNewCard(
-                        AlgorithmCard(
-                            id = null,
-                            name = "JJs Card",
-                            description = "New Card",
-                            type = CardType.ALGORITHM,
-                            modality = modality,
-                            algorithm = algorithm
-                        )
-                    )
-                }
-            }
+            viewModel.saveNewCard(
+                CpuCard(
+                    id = null,
+                    name = cardName,
+                    description = "New Card",
+                    type = CardType.CPU,
+                    clockSpeed = selectedClockSpeed
+                )
+            )
         },
-        enabled = selectedModalityOption != null && selectedAlgorithmOption !== null
     ) {
         Text("Save Card")
     }
