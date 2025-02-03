@@ -9,7 +9,7 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.*
 import com.joanjaume.myapplication.repository.CardProvider
 import com.joanjaume.myapplication.repository.TypesProvider
 
-class SimulationViewModel() : ViewModel() {
+class SimulationViewModel(private val userId: String) : ViewModel() {
     // LiveData Initialization with default values
     private val _stepperStep = MutableLiveData<Int>(1)
     val stepperStep: LiveData<Int> = _stepperStep
@@ -39,17 +39,19 @@ class SimulationViewModel() : ViewModel() {
     private val typeProvider = TypesProvider()
 
     fun initializeStepOne() {
-        cardProviders.getAllTaskCards { taskCards, error ->
+
+        cardProviders.getUserTaskCards(userId) { taskCards, error ->
             if (error != null) {
                 // Log the error or handle it as needed
                 println("Error retrieving task cards: ${error.message}")
-                // Optionally update a LiveData or state to reflect the erro
+                // Optionally update a LiveData or state to reflect the error
             } else if (taskCards != null) {
-                // Update your LiveData with the retrieved cards
+                // Update your LiveData or State with the retrieved cards
                 _taskCards.value = taskCards
-            } else
-            // Handle the case where taskCards is null and there's no error (unlikely but possible)
+            } else {
+                // Handle the unlikely case where taskCards is null and there's no error
                 println("No task cards found and no error reported.")
+            }
         }
 
 
@@ -58,7 +60,7 @@ class SimulationViewModel() : ViewModel() {
 
     fun initializeStepTwo() {
 //        _algorithmCards.value = cardProvider.getAllAlgorithmCards()
-        cardProviders.getAllAlgorithmCards() { algorithmCards, error ->
+        cardProviders.getUserAlgorithmCards(userId) { algorithmCards, error ->
             if (error != null) {
                 // Log the error or handle it as needed
                 println("Error retrieving task cards: ${error.message}")
@@ -74,7 +76,7 @@ class SimulationViewModel() : ViewModel() {
 
     fun initializeStepThree() {
 //        _cpuCards.value = cardProvider.getAllCpuCards()
-        cardProviders.getAllCpuCards() { cpuCards, error ->
+        cardProviders.getUserCpuCards(userId) { cpuCards, error ->
             if (error != null) {
                 // Log the error or handle it as needed
                 println("Error retrieving task cards: ${error.message}")
@@ -123,7 +125,7 @@ class SimulationViewModel() : ViewModel() {
     fun saveNewCard(card: ICardGeneric) {
         when (card.type) {
             CardType.TASK -> {
-                cardProviders.addTaskCard(card as TaskCard) { success, error ->
+                cardProviders.addUserTaskCard(card as TaskCard, userId) { success, error ->
                     if (success) {
                         // Handle success (e.g., notify the user, update UI)
                         println("TaskCard successfully added!")
@@ -137,7 +139,10 @@ class SimulationViewModel() : ViewModel() {
             }
             CardType.ALGORITHM -> {
 //                cardProvider.handleAddAlgorithmCard(card as AlgorithmCard)
-                cardProviders.addAlgorithmCard(card as AlgorithmCard) { success, error ->
+                cardProviders.addUserAlgorithmCard(
+                    card as AlgorithmCard,
+                    userId
+                ) { success, error ->
                     if (success) {
                         // Handle success (e.g., notify the user, update UI)
                         println("TaskCard successfully added!")
@@ -150,7 +155,7 @@ class SimulationViewModel() : ViewModel() {
                 initializeStepTwo()
             }
             CardType.CPU -> {
-                cardProviders.addCpuCard(card as CpuCard) { success, error ->
+                cardProviders.addUserCpuCard(card as CpuCard, userId) { success, error ->
                     if (success) {
                         // Handle success (e.g., notify the user, update UI)
                         println("TaskCard successfully added!")

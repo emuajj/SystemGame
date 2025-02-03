@@ -6,12 +6,15 @@ import com.joanjaume.myapplication.models.interfaces.cardInterface.AlgorithmCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CpuCard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 
+
 class CardProviders {
 
     private val db = FirebaseFirestore.getInstance()
 
-    fun getAllTaskCards(callback: (List<TaskCard>?, FirebaseFirestoreException?) -> Unit) {
+    // For TaskCards
+    fun getUserTaskCards(userId: String, callback: (List<TaskCard>?, FirebaseFirestoreException?) -> Unit) {
         db.collection("taskCards")
+            .whereEqualTo("userId", userId)
             .get()
             .addOnSuccessListener { result ->
                 val cards = result.documents.mapNotNull { it.toObject(TaskCard::class.java) }
@@ -22,9 +25,10 @@ class CardProviders {
             }
     }
 
-    fun addTaskCard(taskCard: TaskCard, callback: (Boolean, FirebaseFirestoreException?) -> Unit) {
+    fun addUserTaskCard(taskCard: TaskCard, userId: String, callback: (Boolean, FirebaseFirestoreException?) -> Unit) {
+        val taskCardWithUser = taskCard.apply { this.userId = userId } // Add userId to the card
         db.collection("taskCards")
-            .add(taskCard)
+            .add(taskCardWithUser)
             .addOnSuccessListener {
                 callback(true, null)
             }
@@ -33,10 +37,10 @@ class CardProviders {
             }
     }
 
-    // Implement other methods similarly
-
-    fun getAllCpuCards(callback: (List<CpuCard>?, FirebaseFirestoreException?) -> Unit) {
+    // For CpuCards
+    fun getUserCpuCards(userId: String, callback: (List<CpuCard>?, FirebaseFirestoreException?) -> Unit) {
         db.collection("cpuCards")
+            .whereEqualTo("userId", userId)
             .get()
             .addOnSuccessListener { result ->
                 val cards = result.documents.mapNotNull { it.toObject(CpuCard::class.java) }
@@ -47,9 +51,10 @@ class CardProviders {
             }
     }
 
-    fun addCpuCard(cpuCard: CpuCard, callback: (Boolean, FirebaseFirestoreException?) -> Unit) {
+    fun addUserCpuCard(cpuCard: CpuCard, userId: String, callback: (Boolean, FirebaseFirestoreException?) -> Unit) {
+        val cpuCardWithUser = cpuCard.apply { this.userId = userId } // Add userId to the card
         db.collection("cpuCards")
-            .add(cpuCard)
+            .add(cpuCardWithUser)
             .addOnSuccessListener {
                 callback(true, null)
             }
@@ -58,9 +63,10 @@ class CardProviders {
             }
     }
 
-    // Methods for AlgorithmCard
-    fun getAllAlgorithmCards(callback: (List<AlgorithmCard>?, FirebaseFirestoreException?) -> Unit) {
+    // For AlgorithmCards
+    fun getUserAlgorithmCards(userId: String, callback: (List<AlgorithmCard>?, FirebaseFirestoreException?) -> Unit) {
         db.collection("algorithmCards")
+            .whereEqualTo("userId", userId)
             .get()
             .addOnSuccessListener { result ->
                 val cards = result.documents.mapNotNull { it.toObject(AlgorithmCard::class.java) }
@@ -71,9 +77,10 @@ class CardProviders {
             }
     }
 
-    fun addAlgorithmCard(algorithmCard: AlgorithmCard, callback: (Boolean, FirebaseFirestoreException?) -> Unit) {
+    fun addUserAlgorithmCard(algorithmCard: AlgorithmCard, userId: String, callback: (Boolean, FirebaseFirestoreException?) -> Unit) {
+        val algorithmCardWithUser = algorithmCard.apply { this.userId = userId } // Add userId to the card
         db.collection("algorithmCards")
-            .add(algorithmCard)
+            .add(algorithmCardWithUser)
             .addOnSuccessListener {
                 callback(true, null)
             }
@@ -82,3 +89,4 @@ class CardProviders {
             }
     }
 }
+
