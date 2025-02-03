@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "573606550384",
+    "firebase_url": "https://systemgame-e1032-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "systemgame-e1032",
+    "storage_bucket": "systemgame-e1032.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573606550384:android:d92babe0be984adba20db5",
+        "android_client_info": {
+          "package_name": "com.joanjaume.myapplication.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdQ31VvpwM5Nf8NpqWIZi5ncYs5GxGbUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,76 +1,101 @@
 package com.joanjaume.myapplication.models.gameModels
 
-import GanttChart
 import com.joanjaume.myapplication.models.deck.Deck
-import com.joanjaume.myapplication.models.gameBoard.GameBoard
 import com.joanjaume.myapplication.models.interfaces.cardInterface.*
-import com.joanjaume.myapplication.models.interfaces.gantInterface.GanttTask
+import com.joanjaume.myapplication.models.scheduler.Scheduler
+import com.joanjaume.myapplication.models.scheduler.process.ProcessQueue
 import com.joanjaume.myapplication.repository.CardProvider
 
-class CountdownData(var difficulty: String) {
-    private var deck = Deck()
-    private var cardProvider: CardProvider = CardProvider();
-    private lateinit var gameBoard: GameBoard
 
-    fun initCountdown(){
-        initDeck()
-        initCpuCard()
-        gameBoard = GameBoard(deck)
+class CountdownData {
+    private val processQueue = ProcessQueue()
+    private val scheduler = Scheduler(processQueue)
+    private val deck: Deck = Deck()
+    private var cpuCard: CpuCard? = null
+    private var algorithmCard: AlgorithmCard? = null
+    private var processIdCounter = 0
+
+
+//    fun addUserProcess(card: TaskCard) {
+//        val newProcess = card.copy(id = processIdCounter++)
+//        newProcess.arriveTime = getCurrentTime()
+//        newProcess.state = TaskCard.New // Ensure the state is set to Ready before adding
+//        scheduler.addProcess(newProcess)
+//        // Run the next step with a specified algorithm and modality
+//        for (i in 0 until cpuCard!!.clockSpeed) {
+//            runNextSchedulerStep(algorithmCard!!.algorithm, algorithmCard!!.modality)
+//        }
+//    }
+
+//    fun runNextSchedulerStep(algorithm: Int, modality: Int) {
+//        scheduler.runNextStep(algorithm, modality, 1,cpuCard ?? CpuCard())
+//    }
+
+    fun getGanttChart(): String {
+        return ""
+        //        return scheduler.updateGantt()
     }
 
-    fun getDeck(): List<ICardGeneric> {
-        return deck.getDeck()
+    // Deck management methods
+    fun addCardToDeck(card: TaskCard) {
+        deck.addCard(card)
     }
 
-    fun addCard() {
-        deck.addCard(
-            TaskCard(
-                null,
-                "Card 1",
-                CardType.TASK,
-                "Description for Card 1",
-                "John Doe",
-                5,
-                3
-            )
-        )
+    fun removeCardFromDeck(card: ICardGeneric) {
+        deck.removeCard(card)
     }
 
-    private fun initDeck() {
-        deck.setDeck(cardProvider.getInitialTaskCards())
+    fun getDeckCards(): List<ICardGeneric> {
+        return deck.getCards()
     }
 
-    private fun initCpuCard () {
-        deck.addCard(cardProvider.getCpuCard())
+    fun addCardsToDeck(cards: List<ICardGeneric>) {
+        cards.forEach {
+            deck.addCard(it)
+        }
     }
 
-    fun getCpuCard() : MutableList<CpuCard> {
-        return gameBoard.actualCpus
+    fun getProcessTable(): List<TaskCard> {
+//        return scheduler.getProcessTable();
+        return emptyList()
     }
 
-    fun setGantt(gant : GanttChart){
-        gameBoard.setGantt(gant)
+    fun getCurrentTime(): Int {
+        return scheduler.currentTime
     }
 
-    fun getGantt(): Map<Int, GanttTask> {
-        return gameBoard.getGanttChart()  // Directly return the Gantt chart map from the GameBoard
+//    fun iterateTime() {
+//        for (i in 0 until cpuCard!!.clockSpeed) {
+//            runNextSchedulerStep(algorithmCard!!.algorithm, algorithmCard!!.modality)
+//        }
+//    }
+
+    fun setCpuCard(incomincCpu: CpuCard) {
+        cpuCard = incomincCpu
     }
 
-    fun IterateTime() : Long{
-        return gameBoard.iterateTime()
+    fun getCpuCard(): CpuCard? {
+        return cpuCard
     }
 
-
-    fun removeOneCardFromDeck(cardId: Int) {
-        deck.removeCard(cardId)
+    fun getAlgorithmCard(): AlgorithmCard? {
+        return algorithmCard
     }
 
-
-    fun addCardToGantt(card: TaskCard) {
-        gameBoard.addTaskToGantt(card)  // Delegate the task addition to the GameBoard
+    fun setAlgorithmCard(incomingAlgorithm: AlgorithmCard) {
+        algorithmCard = incomingAlgorithm
     }
 
+    fun handleGenericClick(card: ICardGeneric) {
+        if (card.type == CardType.ALGORITHM) {
+            setAlgorithmCard(card as AlgorithmCard)
+        } else if (card.type == CardType.CPU) {
+            setCpuCard(card as CpuCard)
+        }
+    }
 
-
-
+//    fun playCard(card: TaskCard) {
+//        removeCardFromDeck(card)
+//        addUserProcess(card)
+//    }
 }
