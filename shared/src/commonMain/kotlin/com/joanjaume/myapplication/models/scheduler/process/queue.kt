@@ -9,11 +9,19 @@ class ProcessQueue {
 
     fun enqueue(process: TaskCard) {
         queue.add(process)
+        println("Enqueued: ${process.name}")
+    }
+    fun enqueueAll(processes: List<TaskCard>) {
+        queue.addAll(processes)
+        processes.forEach { println("Enqueued: ${it.name}") }
     }
 
     fun dequeue(): TaskCard? {
-        return if (queue.isNotEmpty()) queue.removeAt(0) else null
+        val process = if (queue.isNotEmpty()) queue.removeAt(0) else null
+        println("Dequeued: ${process?.name}")
+        return process
     }
+
 
     fun isEmpty(): Boolean {
         return queue.isEmpty()

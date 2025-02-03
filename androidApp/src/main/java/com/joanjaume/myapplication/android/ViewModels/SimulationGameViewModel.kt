@@ -77,8 +77,8 @@ class SimulationGameViewModel(
         scheduler.runNextStep(
             algorithm = algorithmCard.algorithm,
             modality = algorithmCard.modality,
-            quantum = 1,
-            cpuCard = cpuCard
+            quantum = algorithmCard.quantum ?: 1 ,
+//            cpuCard = cpuCard
         )
         _timeCount.value = scheduler.currentTime
         _ganttTasks.value = scheduler.getProcessTable()
