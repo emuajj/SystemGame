@@ -90,9 +90,9 @@ fun MyApp() {
             composable("menu") {
                 MenuScreen(navController = navController)
             }
-            composable("countdown") {
-                CountdownScreen()
-            }
+//            composable("countdown") {
+//                CountdownScreen()
+//            }
             composable("simulation") {
                 LaunchedEffect(Unit) {
                     // Create an intent to start SimulationActivity
