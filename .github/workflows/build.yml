@@ -2,9 +2,9 @@ name: CI/CD for System Game
 
 on:
   push:
-    branches: [ "develop","master" ]
+    branches: [ "release","master" ]
   pull_request:
-    branches: [ "develop","master" ]
+    branches: [ "release","master" ]
 
 jobs:
   build:

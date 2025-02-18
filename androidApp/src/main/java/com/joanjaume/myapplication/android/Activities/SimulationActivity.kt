@@ -23,15 +23,25 @@ import com.joanjaume.myapplication.android.screens.Simulation.SimulationGame
 class SimulationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Retrieve the userId passed from MyApp
+        val userId = intent.getStringExtra("userId")
+        val userName = intent.getStringExtra("userName")
+
+        // Use userId and userName as needed
+        println("User ID: $userId")
+        println("User Name: $userName")
         setContent {
-            SimulationComposable()
+            if (userId != null) {
+                SimulationComposable(userId = userId)
+            }
         }
     }
 }
 
 @Composable
-fun SimulationComposable() {
-    val viewModel = SimulationViewModel()
+fun SimulationComposable(userId: String) {
+    val viewModel = SimulationViewModel(userId)
     val stepperValue = viewModel.stepperStep.observeAsState(1)
     var showStepper by remember { mutableStateOf(true) }
 

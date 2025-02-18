@@ -18,6 +18,8 @@ import com.joanjaume.myapplication.android.ViewModels.SimulationViewModel
 import com.joanjaume.myapplication.models.interfaces.cardInterface.CardType
 import com.joanjaume.myapplication.models.interfaces.cardInterface.TaskCard
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -103,39 +105,53 @@ fun BurstDialog(
     burstList: MutableList<String>,
     updateBurstList: (MutableList<String>) -> Unit
 ) {
-    var tempOperation by remember { mutableStateOf("") }
-
     AlertDialog(
         onDismissRequest = { onDismiss() },
         title = { Text("Configure Bursts") },
         text = {
             Column {
-                TextField(
-                    value = tempOperation,
-                    onValueChange = { tempOperation = it },
-                    label = { Text("Enter Operation (cpu/io)") }
-                )
-                Spacer(modifier = Modifier.height(16.dp))  // Adds space between TextField and LazyColumn
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = {
+                        updateBurstList(burstList.toMutableList().apply { add("cpu") })
+                    }) {
+                        Text("Add CPU")
+                    }
+                    Button(onClick = {
+                        updateBurstList(burstList.toMutableList().apply { add("io") })
+                    }) {
+                        Text("Add IO")
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
                 if (burstList.isNotEmpty()) {
                     LazyColumn(
                         modifier = Modifier
-                            .fillMaxWidth()  // Ensures the LazyColumn fills the horizontal space
-                            .heightIn(max = 210.dp)  // Restricts the maximum height of the LazyColumn
+                            .fillMaxWidth()
+                            .heightIn(max = 210.dp)
                     ) {
                         itemsIndexed(burstList) { index, burst ->
                             Row(
                                 modifier = Modifier
-                                    .fillMaxWidth()  // Ensures the Row fills the horizontal space
-                                    .padding(2.dp)  // Adds padding around each Row for better spacing
-                                    .border(1.dp, Color.Blue, RoundedCornerShape(8.dp))  // Adds a border with rounded corners
-                                    .padding(10.dp)  // Additional padding inside the Row
+                                    .fillMaxWidth()
+                                    .padding(2.dp)
+                                    .border(1.dp, Color.Blue, RoundedCornerShape(8.dp))
+                                    .padding(10.dp)
                             ) {
                                 Text(
-                                    text = "${index + 1} - $burst",  // Display index and burst type
+                                    text = "${index + 1} - $burst",
                                     modifier = Modifier
-                                        .weight(1f)  // Allocates a fraction of the Row's space to this Text
-                                        .padding(end = 8.dp)  // Adds padding to the end of the Text
+                                        .weight(1f)
+                                        .padding(end = 8.dp)
                                 )
+                                Button(onClick = {
+                                    val newList = burstList.toMutableList().apply { removeAt(index) }
+                                    updateBurstList(newList)
+                                }) {
+                                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+                                }
                             }
                         }
                     }
@@ -143,33 +159,21 @@ fun BurstDialog(
                     Text(
                         text = "No Burst",
                         style = TextStyle(
-                            fontSize = 20.sp, // Changes the font size to 20 sp
-                            fontWeight = FontWeight.Light, // Lightens the font weight
-                            fontStyle = FontStyle.Italic  // Optionally italicizes the text for emphasis
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Light,
+                            fontStyle = FontStyle.Italic
                         ),
-                        modifier = Modifier.padding(8.dp) // Adds padding around the text
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
             }
         },
         confirmButton = {
-            Button(
-                onClick = {
-                    if (tempOperation == "cpu" || tempOperation == "io") {
-                        updateBurstList(burstList.apply { add(tempOperation) })
-                        tempOperation = ""  // Reset for next input
-                        onDismiss()
-                    }
-                }
-            ) {
-                Text("Add")
-            }
-        },
-        dismissButton = {
             Button(onClick = { onDismiss() }) {
-                Text("Cancel")
+                Text("Close")
             }
         }
     )
 }
+
 
