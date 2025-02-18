@@ -58,7 +58,7 @@ fun AuthScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Welcome", style = MaterialTheme.typography.h5)
+            Text("Game System", style = MaterialTheme.typography.h5)
 
             Spacer(modifier = Modifier.height(16.dp))
 
