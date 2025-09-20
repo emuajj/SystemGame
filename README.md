@@ -1,110 +1,110 @@
-# 🧠 System Game – Simulador de Planificació de Processos
+# 🧠 System Game – Process Planning Simulator
 
-**System Game** és una aplicació educativa multiplataforma que simula el funcionament dels algorismes de planificació de processos dins una CPU. Està orientada a estudiants d’enginyeria informàtica i desenvolupadors que volen entendre millor la gestió de processos mitjançant una experiència visual, interactiva i gamificada.
+**System Game** is a cross-platform educational application that simulates the operation of process planning algorithms inside a CPU. It is aimed at computer engineering students and developers who want to better understand process management through a visual, interactive and gamified experience.
 
-## 🎯 Objectius del Projecte
+## 🎯 Project Objectives
 
-- Simular de manera visual els principals algorismes de planificació: FCFS, SJF, Round Robin, Prioritats i HRRN.
-- Fomentar l'aprenentatge mitjançant la gamificació.
-- Desenvolupar una aplicació clara, accessible i multiplataforma.
-- Aplicar bones pràctiques de desenvolupament com Clean Architecture, CI/CD i modularització.
+- Visually simulate the main planning algorithms: FCFS, SJF, Round Robin, Priorities and HRRN.
+- Promote learning through gamification.
+- Develop a clear, accessible and cross-platform application.
+- Apply good development practices such as Clean Architecture, CI/CD and modularization.
 
-## 🛠️ Tecnologies Utilitzades
+## 🛠️ Technologies Used
 
-| Tecnologia                     | Propòsit                                       |
-|-------------------------------|------------------------------------------------|
-| Kotlin Multiplatform Mobile   | Lògica de negoci compartida Android/iOS       |
-| Jetpack Compose               | Interfície gràfica declarativa (Android)      |
-| Firebase (Firestore + Auth)   | Persistència de dades i autenticació d'usuaris|
-| Git & GitHub Actions          | Control de versions i integració contínua     |
-| Clean Architecture            | Arquitectura modular i escalable              |
+| Technology | Purpose |
+|----------------------------|------------------------------------------------|
+| Kotlin Multiplatform Mobile | Shared Business Logic Android/iOS |
+| Jetpack Compose | Declarative GUI (Android) |
+| Firebase (Firestore + Auth) | Data Persistence & User Authentication |
+| Git & GitHub Actions | Version Control & Continuous Integration |
+| Clean Architecture | Modular & Scalable Architecture |
 
-## 🚀 Instal·lació i Execució
+## 🚀 Installation and Execution
 
-### Requisits previs
+### Prerequisites
 
-- Android Studio Arctic Fox o superior
+- Android Studio Arctic Fox or higher
 - JDK 11+
-- Compte de Firebase amb Firestore i Authentication activats
+- Firebase account with Firestore and Authentication enabled
 
-### Clonació del projecte
+### Cloning the project
 
 ```bash
 git clone https://github.com/el_teu_usuari/system-game.git
 cd system-game
 ```
 
-### Compilació Android
+### Android compilation
 
 ```bash
 ./gradlew build
 ```
 
-### Execució a l'emulador o dispositiu
+### Running on emulator or device
 
 ```bash
 ./gradlew installDebug
 ```
 
-## 🧪 CI/CD amb GitHub Actions
+## 🧪 CI/CD with GitHub Actions
 
-- Compilació automàtica del projecte
-- Execució de proves unitàries
-- Generació de builds per a producció
-- Preparació per a desplegament automatitzat
+- Automatic project compilation
+- Running unit tests
+- Generating builds for production
+- Preparing for automated deployment
 
-Arxiu de configuració: `.github/workflows/build.yml`
+Configuration file: `.github/workflows/build.yml`
 
-## 🖼️ Captures de Pantalla
+## 🖼️ Screenshots
 
-| Login | Menú Principal | Configuració |
+| Login | Main Menu | Settings |
 |-------|----------------|--------------|
 | ![Login](docs/screenshots/login.png) | ![Menu](docs/screenshots/menu.png) | ![Stepper](docs/screenshots/stepper.png) |
 
-| Simulació | Gantt | Resultats |
+| Simulation | Gantt | Results |
 |-----------|--------|-----------|
-| ![Simulació](docs/screenshots/simulation.png) | ![Gantt](docs/screenshots/gantt.png) | ![Resultats](docs/screenshots/results.png) |
+| ![Simulation](docs/screenshots/simulation.png) | ![Gantt](docs/screenshots/gantt.png) | ![Results](docs/screenshots/results.png) |
 
-## 📚 Estructura del Projecte
+## 📚 Project Structure
 
 ```
 system-game/
-├── app/                      # Frontend Android amb Jetpack Compose
-├── shared/                   # Backend compartit amb KMM
-│   ├── model/                # Models de dades (cards, CPU, etc.)
-│   ├── repository/           # Persistència i interfícies
-│   └── scheduler/            # Lògica de planificació de processos
-├── .github/workflows/        # Workflows per CI/CD
-└── docs/                     # Documentació i captures de pantalla
+├── app/ # Android frontend with Jetpack Compose
+├── shared/ # Backend shared with KMM
+│ ├── model/ # Data models (cards, CPU, etc.)
+│ ├── repository/ # Persistence and interfaces
+│ └── scheduler/ # Process planning logic
+├── .github/workflows/ # Workflows for CI/CD
+└── docs/ # Documentation and screenshots
 ```
 
-## 🎮 Funcionalitats Principals
+## 🎮 Main Features
 
-- Login i registre d’usuaris amb Firebase
-- Creació i configuració de simulacions personalitzades
-- Implementació d’algorismes com FCFS, SJF, RR, Prioritats, HRRN
-- Visualització de l’execució amb un diagrama de Gantt
-- Càlcul automàtic de mètriques (temps d’espera, resposta, retorn)
-- Arquitectura escalable i modular basada en Clean Architecture
+- User login and registration with Firebase
+- Creation and configuration of custom simulations
+- Implementation of algorithms such as FCFS, SJF, RR, Priorities, HRRN
+- Execution visualization with a Gantt chart
+- Automatic calculation of metrics (waiting time, response, return)
+- Scalable and modular architecture based on Clean Architecture
 
-## 🔮 Desenvolupaments Futurs
+## 🔮 Future Developments
 
-- Versió per a iOS amb SwiftUI
-- Persistència i autenticació també per iOS via mòdul compartit
-- Nous modes de joc:
-  - Contrarellotge: optimitzar el temps de planificació
-  - Task Guess: deduir cartes ocultes en simulacions parcials
-- Inserció de processos en temps real durant l’execució
-- Simulació de CPU amb múltiples fils d’execució (multithreading)
+- Version for iOS with SwiftUI
+- Persistence and authentication also for iOS via shared module
+- New game modes:
+- Time trial: optimize planning time
+- Task Guess: deduce hidden cards in partial simulations
+- Insertion of processes in real time during execution
+- CPU simulation with multiple execution threads (multithreading)
 
-## 📄 Crèdits
+## 📄 Credits
 
-**Autor**: Joan Jaume Moll Alòs  
-**Tutor del TFG**: Jordi Mateo Fornés  
-**Titulació**: Grau en Tècniques d’Interacció Digital i Computació  
-**Universitat**: Universitat de Lleida  
-**Any**: 2025
+**Author**: Joan Jaume Moll Alòs
+**TFG Tutor**: Jordi Mateo Fornés
+**Degree**: Degree in Digital Interaction and Computing Techniques
+**University**: University of Lleida
+**Year**: 2025
 
-## 📜 Llicència
+## 📜 License
 
-Aquest projecte està llicenciat sota la [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
